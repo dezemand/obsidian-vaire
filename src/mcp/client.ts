@@ -36,7 +36,7 @@ export interface McpClientOptions {
 interface PendingRequest {
   resolve: (value: unknown) => void;
   reject: (err: unknown) => void;
-  timer: ReturnType<typeof setTimeout>;
+  timer: number;
 }
 
 const defaultSpawn: SpawnFn = (file, args, opts) =>
@@ -113,7 +113,7 @@ export class McpClient {
     const timeoutMs = this.opts.requestTimeoutMs ?? 15_000;
     const payload = `${JSON.stringify({ jsonrpc: '2.0', id, method, params })}\n`;
     return new Promise<T>((resolve, reject) => {
-      const timer = setTimeout(() => {
+      const timer = window.setTimeout(() => {
         this.pending.delete(id);
         reject(new VaireError(`MCP request '${method}' timed out after ${timeoutMs}ms`, 1, 'mcp_timeout'));
       }, timeoutMs);
@@ -130,9 +130,10 @@ export class McpClient {
   }
 
   private handleLine(line: string): void {
-    let msg: { id?: number; result?: unknown; error?: { code: number; message: string } } | null = null;
+    type RpcMessage = { id?: number; result?: unknown; error?: { code: number; message: string } };
+    let msg: RpcMessage | null = null;
     try {
-      msg = JSON.parse(line);
+      msg = JSON.parse(line) as RpcMessage;
     } catch {
       return; // not a JSON-RPC message — ignore rather than crash the client over stray output
     }
@@ -140,7 +141,7 @@ export class McpClient {
     const pending = this.pending.get(msg.id);
     if (!pending) return; // late/duplicate response, or a ping we didn't send — ignore
     this.pending.delete(msg.id);
-    clearTimeout(pending.timer);
+    window.clearTimeout(pending.timer);
     if (msg.error) {
       pending.reject(new VaireError(msg.error.message ?? 'MCP protocol error', 1, 'mcp_protocol'));
     } else {
@@ -153,7 +154,7 @@ export class McpClient {
     this.dead = true;
     const reason = err ? err.message : `vaire mcp exited (code ${code ?? 'null'}, signal ${signal ?? 'null'})`;
     for (const pending of this.pending.values()) {
-      clearTimeout(pending.timer);
+      window.clearTimeout(pending.timer);
       pending.reject(new VaireError(reason, 1, 'mcp_crashed'));
     }
     this.pending.clear();
@@ -177,7 +178,7 @@ export class McpClient {
     this.child = null;
     if (child) child.kill();
     for (const pending of this.pending.values()) {
-      clearTimeout(pending.timer);
+      window.clearTimeout(pending.timer);
       pending.reject(new VaireError('MCP client closed', 1, 'mcp_closed'));
     }
     this.pending.clear();

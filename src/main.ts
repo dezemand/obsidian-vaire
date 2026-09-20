@@ -97,7 +97,8 @@ export default class VairePlugin extends Plugin {
   private readonly lastAutoIndexError = new Map<string, string>();
 
   async onload(): Promise<void> {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    const saved = (await this.loadData()) as Partial<VaireSettings> | null | undefined;
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, saved);
 
     this.cli = new VaireCli(() => this.settings, undefined, {
       // perf/mcp-transport: a package root's persistent MCP server crashed past its restart

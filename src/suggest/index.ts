@@ -133,7 +133,7 @@ export function registerSuggestions(plugin: VairePlugin): void {
   };
 
   plugin.addCommand({
-    id: 'vaire-search',
+    id: 'search',
     name: 'Search',
     checkCallback: (checking) => {
       const pkg = activePackage(plugin) ?? plugin.packages.all()[0] ?? null;
@@ -144,7 +144,7 @@ export function registerSuggestions(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-link-selection',
+    id: 'link-selection',
     name: 'Link selection',
     editorCheckCallback: (checking, editor, ctx) => {
       const file = ctx.file;
@@ -161,7 +161,7 @@ export function registerSuggestions(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-resolve-loose-end',
+    id: 'resolve-loose-end',
     name: 'Resolve loose end at cursor',
     editorCheckCallback: (checking, editor, ctx) => {
       const file = ctx.file;
@@ -181,9 +181,8 @@ export function registerSuggestions(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-quick-switch',
+    id: 'quick-switch',
     name: 'Quick switch to node',
-    hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'O' }],
     checkCallback: (checking) => {
       if (plugin.packages.all().length === 0) return false;
       if (!checking) new VaireQuickSwitchModal(plugin).open();
@@ -192,7 +191,7 @@ export function registerSuggestions(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-quick-switch-insert-link',
+    id: 'quick-switch-insert-link',
     name: 'Insert link to node…',
     editorCheckCallback: (checking, editor, ctx) => {
       const file = ctx.file;
@@ -212,7 +211,7 @@ export function registerSuggestions(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-open-node-under-cursor',
+    id: 'open-node-under-cursor',
     name: 'Open node under cursor',
     editorCheckCallback: (checking, editor, ctx) => {
       const file = ctx.file;

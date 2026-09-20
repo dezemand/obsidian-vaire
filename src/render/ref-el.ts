@@ -20,6 +20,7 @@ import { resolveLocalRef, type LocalNode } from '../packages';
 import { openRef } from '../navigate';
 import type { ResolveResult } from '../types';
 import type VairePlugin from '../main';
+import { applyTypeColor } from '../theme/index';
 import {
   externalTooltip,
   localTooltip,
@@ -77,11 +78,11 @@ export function createRefElement(plugin: VairePlugin, ref: VaireRef, opts: RefEl
 function ensureAnchor(reuse?: HTMLElement): HTMLAnchorElement {
   if (reuse instanceof HTMLAnchorElement) return reuse;
   if (reuse) {
-    const a = document.createElement('a');
+    const a = createEl('a');
     reuse.replaceWith(a);
     return a;
   }
-  return document.createElement('a');
+  return createEl('a');
 }
 
 function clearChildren(el: HTMLElement): void {
@@ -89,9 +90,10 @@ function clearChildren(el: HTMLElement): void {
 }
 
 /** Resets classes/attributes/text shared by every id-ref state; called at the top of each render. */
-function resetBase(el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptions): void {
+function resetBase(plugin: VairePlugin, el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptions): void {
   el.classList.remove('is-unresolved', ...STATE_CLASSES);
   el.classList.add('vaire-link', `vaire-type-${ref.type}`);
+  applyTypeColor(plugin, el, ref.type);
   el.dataset.vaireRef = ref.full;
   el.dataset.vaireType = ref.type;
   // The resolution root this element was rendered against — read back by the hover-preview
@@ -142,7 +144,7 @@ function renderLocal(
   opts: RefElementOptions,
   node: LocalNode,
 ): void {
-  resetBase(el, ref, opts);
+  resetBase(plugin, el, ref, opts);
   const text = opts.display ?? node.name;
   el.appendChild(document.createTextNode(text));
   setTooltip(el, localTooltip(ref.full, node.name));
@@ -164,7 +166,7 @@ function renderLocal(
 // ---- CLI-backed (asynchronous) resolution ----------------------------------------------
 
 function renderPending(plugin: VairePlugin, el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptions): void {
-  resetBase(el, ref, opts);
+  resetBase(plugin, el, ref, opts);
   el.classList.add('vaire-link-pending');
   const text = opts.display ?? ref.full;
   el.appendChild(document.createTextNode(text));
@@ -178,15 +180,15 @@ async function settleAsync(plugin: VairePlugin, el: HTMLAnchorElement, ref: IdRe
   try {
     const result = await plugin.resolveViaCli(opts.repo, ref.full);
     if (result === null) {
-      renderMissing(el, ref, opts);
+      renderMissing(plugin, el, ref, opts);
       return;
     }
-    renderResolved(el, ref, opts, result);
+    renderResolved(plugin, el, ref, opts, result);
   } catch (err) {
     if (err instanceof VaireError && err.kind === 'dependency') {
-      renderUnlinked(el, ref, opts);
+      renderUnlinked(plugin, el, ref, opts);
     } else {
-      renderMissing(el, ref, opts, errMessage(err));
+      renderMissing(plugin, el, ref, opts, errMessage(err));
     }
   }
 }
@@ -195,8 +197,8 @@ function errMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
-function renderResolved(el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptions, result: ResolveResult): void {
-  resetBase(el, ref, opts);
+function renderResolved(plugin: VairePlugin, el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptions, result: ResolveResult): void {
+  resetBase(plugin, el, ref, opts);
   const name = nameFromResolveResult(result, ref.full);
   const external = !!ref.pkg; // by construction: only reached here when pkg is absent (same-package
   // fallback) or present-and-not-a-vault-package (a genuine dependency).
@@ -206,20 +208,17 @@ function renderResolved(el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptio
   setTooltip(el, external ? externalTooltip(ref.full, name, ref.pkg as string) : localTooltip(ref.full, name));
 }
 
-function renderUnlinked(el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptions): void {
-  resetBase(el, ref, opts);
+function renderUnlinked(plugin: VairePlugin, el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptions): void {
+  resetBase(plugin, el, ref, opts);
   el.classList.add('vaire-link-unlinked');
-  const pill = document.createElement('span');
-  pill.className = 'vaire-pkg-pill';
-  pill.textContent = `@${ref.pkg ?? ''}`;
-  el.appendChild(pill);
+  el.createEl('span', { cls: 'vaire-pkg-pill', text: `@${ref.pkg ?? ''}` });
   const text = opts.display ?? ref.local;
   el.appendChild(document.createTextNode(text));
   setTooltip(el, unlinkedTooltip(ref.full, ref.pkg ?? ''));
 }
 
-function renderMissing(el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptions, message?: string): void {
-  resetBase(el, ref, opts);
+function renderMissing(plugin: VairePlugin, el: HTMLAnchorElement, ref: IdRef, opts: RefElementOptions, message?: string): void {
+  resetBase(plugin, el, ref, opts);
   el.classList.add('vaire-link-missing');
   const text = opts.display ?? ref.full;
   el.appendChild(document.createTextNode(text));
@@ -271,10 +270,10 @@ function bindClick(plugin: VairePlugin, el: HTMLAnchorElement, ref: IdRef, opts:
 function renderLoose(plugin: VairePlugin, ref: LooseRef, opts: RefElementOptions): HTMLElement {
   let el: HTMLElement;
   if (opts.reuse instanceof HTMLAnchorElement) {
-    el = document.createElement('span');
+    el = createEl('span');
     opts.reuse.replaceWith(el);
   } else {
-    el = opts.reuse ?? document.createElement('span');
+    el = opts.reuse ?? createEl('span');
   }
   el.className = 'vaire-loose-end';
   clearChildren(el);

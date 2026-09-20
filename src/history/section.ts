@@ -5,7 +5,6 @@
 
 import { parseRef } from '../ids';
 import type { LocalNode, PackageInfo } from '../packages';
-import { openFileAtLine } from '../navigate';
 import { createRefElement } from '../render/ref-el';
 import { compareVersions } from '../release/pure';
 import { packageRelativePath } from '../views/pure-pkg';

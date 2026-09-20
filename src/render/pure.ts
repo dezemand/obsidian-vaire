@@ -217,7 +217,7 @@ export function nameFromResolveResult(result: ResolveResult, fallback: string): 
 const FENCE_DELIMITER_RE = /^\s{0,3}(?:```|~~~)/;
 
 export function computeFencedLines(lines: readonly string[]): boolean[] {
-  const result: boolean[] = new Array(lines.length);
+  const result: boolean[] = new Array<boolean>(lines.length);
   let inFence = false;
   for (let i = 0; i < lines.length; i++) {
     if (FENCE_DELIMITER_RE.test(lines[i])) {

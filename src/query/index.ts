@@ -163,36 +163,29 @@ function renderResults(
 }
 
 function buildList(plugin: VairePlugin, pkg: PackageInfo, nodes: QueryNode[]): HTMLElement {
-  const list = document.createElement('ul');
-  list.className = 'vaire-query-list';
+  const list = createEl('ul', { cls: 'vaire-query-list' });
   for (const node of nodes) {
-    const li = document.createElement('li');
+    const li = list.createEl('li');
     li.appendChild(createRefElement(plugin, node.ref, { repo: pkg.absRoot }));
-    list.appendChild(li);
   }
   return list;
 }
 
 function buildTable(plugin: VairePlugin, pkg: PackageInfo, query: ParsedQuery, nodes: QueryNode[]): HTMLElement {
   const columns = columnsFor(query);
-  const table = document.createElement('table');
-  table.className = 'vaire-query-table';
+  const table = createEl('table', { cls: 'vaire-query-table' });
 
-  const thead = document.createElement('thead');
-  const headRow = document.createElement('tr');
+  const thead = table.createEl('thead');
+  const headRow = thead.createEl('tr');
   for (const col of columns) {
-    const th = document.createElement('th');
-    th.textContent = col === 'name' || col === 'type' ? col : humanizeKey(col);
-    headRow.appendChild(th);
+    headRow.createEl('th', { text: col === 'name' || col === 'type' ? col : humanizeKey(col) });
   }
-  thead.appendChild(headRow);
-  table.appendChild(thead);
 
-  const tbody = document.createElement('tbody');
+  const tbody = table.createEl('tbody');
   for (const node of nodes) {
-    const row = document.createElement('tr');
+    const row = tbody.createEl('tr');
     for (const col of columns) {
-      const cell = document.createElement('td');
+      const cell = row.createEl('td');
       if (col === 'name') {
         cell.appendChild(createRefElement(plugin, node.ref, { repo: pkg.absRoot }));
       } else if (col === 'type') {
@@ -200,11 +193,8 @@ function buildTable(plugin: VairePlugin, pkg: PackageInfo, query: ParsedQuery, n
       } else {
         renderCellValue(plugin, pkg.absRoot, cell, node.frontmatter[col]);
       }
-      row.appendChild(cell);
     }
-    tbody.appendChild(row);
   }
-  table.appendChild(tbody);
   return table;
 }
 
@@ -217,7 +207,7 @@ function renderCellValue(plugin: VairePlugin, repo: string, cell: HTMLElement, r
   }
   const items = Array.isArray(raw) ? raw : [raw];
   items.forEach((item, i) => {
-    if (i > 0) cell.appendChild(document.createElement('br'));
+    if (i > 0) cell.createEl('br');
     if (typeof item === 'string') {
       const ref = parseRef(item);
       if (ref) {
@@ -230,9 +220,9 @@ function renderCellValue(plugin: VairePlugin, repo: string, cell: HTMLElement, r
 }
 
 function buildFooter(count: number, source: 'local' | 'cli', elapsedMs: number): HTMLElement {
-  const footer = document.createElement('div');
-  footer.className = 'vaire-query-footer vaire-muted';
   const plural = count === 1 ? 'match' : 'matches';
-  footer.textContent = `${count} ${plural} · source: ${source} · ${Math.round(elapsedMs)}ms`;
-  return footer;
+  return createDiv({
+    cls: 'vaire-query-footer vaire-muted',
+    text: `${count} ${plural} · source: ${source} · ${Math.round(elapsedMs)}ms`,
+  });
 }

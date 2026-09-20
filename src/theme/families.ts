@@ -97,7 +97,7 @@ function isHexColor(value: unknown): value is string {
 export function parseRendererToml(text: string): RendererFamilyConfig {
   let data: Record<string, unknown>;
   try {
-    data = parseToml(text) as Record<string, unknown>;
+    data = parseToml(text);
   } catch {
     return EMPTY_RENDERER_CONFIG;
   }

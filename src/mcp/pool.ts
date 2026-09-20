@@ -41,7 +41,7 @@ export interface McpClientPoolOptions {
 interface Entry {
   client: McpClient;
   lastUsed: number;
-  idleTimer: ReturnType<typeof setTimeout> | null;
+  idleTimer: number | null;
   /** Timestamps (ms) of restarts within the trailing `RESTART_WINDOW_MS`. */
   restarts: number[];
   /** Once true, this root has given up on MCP for the session; `get()` returns `null`. */
@@ -87,7 +87,7 @@ export class McpClientPool {
       entry.restarts = entry.restarts.filter((t) => now - t < RESTART_WINDOW_MS);
       if (entry.restarts.length >= MAX_RESTARTS_PER_MINUTE) {
         entry.fellBack = true;
-        if (entry.idleTimer) clearTimeout(entry.idleTimer);
+        if (entry.idleTimer) window.clearTimeout(entry.idleTimer);
         this.opts.onFallback?.(absRoot, `MCP server for this package crashed ${entry.restarts.length}+ times in the last minute`);
         return null;
       }
@@ -101,9 +101,9 @@ export class McpClientPool {
   }
 
   private armIdleTimer(absRoot: string, entry: Entry): void {
-    if (entry.idleTimer) clearTimeout(entry.idleTimer);
+    if (entry.idleTimer) window.clearTimeout(entry.idleTimer);
     const idleMs = this.opts.idleShutdownMs ?? IDLE_SHUTDOWN_MS;
-    entry.idleTimer = setTimeout(() => {
+    entry.idleTimer = window.setTimeout(() => {
       const current = this.entries.get(absRoot);
       if (!current || current !== entry) return;
       current.client.close();
@@ -117,7 +117,7 @@ export class McpClientPool {
   restart(absRoot: string): void {
     const entry = this.entries.get(absRoot);
     if (!entry) return;
-    if (entry.idleTimer) clearTimeout(entry.idleTimer);
+    if (entry.idleTimer) window.clearTimeout(entry.idleTimer);
     entry.client.close();
     this.entries.delete(absRoot);
   }
@@ -126,7 +126,7 @@ export class McpClientPool {
    *  away from `'mcp'` (a lingering child process would otherwise outlive the setting). */
   closeAll(): void {
     for (const entry of this.entries.values()) {
-      if (entry.idleTimer) clearTimeout(entry.idleTimer);
+      if (entry.idleTimer) window.clearTimeout(entry.idleTimer);
       entry.client.close();
     }
     this.entries.clear();

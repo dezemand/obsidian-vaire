@@ -20,7 +20,6 @@ import type { IdRef } from '../ids';
 import type VairePlugin from '../main';
 import { absPathOf, resolveLocalRef, type LocalNode, type PackageInfo } from '../packages';
 import { nameFromResolveResult } from '../render/pure';
-import type { ResolveResult } from '../types';
 import { confirm } from '../ui/prompt-modal';
 import {
   citationFor,
@@ -119,7 +118,7 @@ async function buildKnownExternalNames(
     if (!promise) continue;
     const settled = await peekSettled(promise);
     if (settled === PENDING || !settled) continue;
-    names.set(ref.full, nameFromResolveResult(settled as ResolveResult, ref.id));
+    names.set(ref.full, nameFromResolveResult(settled, ref.id));
   }
   return names;
 }
@@ -372,7 +371,7 @@ class ExportModal extends Modal {
 
 export function registerExport(plugin: VairePlugin): void {
   plugin.addCommand({
-    id: 'vaire-copy-portable-markdown',
+    id: 'copy-portable-markdown',
     name: 'Copy node as portable Markdown',
     checkCallback: (checking) => {
       const found = currentNode(plugin);
@@ -383,7 +382,7 @@ export function registerExport(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-export-portable-markdown',
+    id: 'export-portable-markdown',
     name: 'Export node as portable Markdown…',
     checkCallback: (checking) => {
       const found = currentNode(plugin);
@@ -394,7 +393,7 @@ export function registerExport(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-copy-node-citation',
+    id: 'copy-node-citation',
     name: 'Copy node citation',
     checkCallback: (checking) => {
       const found = currentNode(plugin);

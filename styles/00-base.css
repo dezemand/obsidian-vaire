@@ -14,13 +14,13 @@
 }
 
 /*
- * `--vaire-type-color` (feat/type-colors): set per type by `src/theme/index.ts`'s injected
- * `<style id="vaire-type-colors">` (e.g. `.vaire-type-decision { --vaire-type-color:
- * #b0394a; }`, light/dark under `body:not(.theme-dark)` / `body.theme-dark`) on the same
- * element that carries the `vaire-type-<t>` class. Unset entirely when
- * `settings.typeColorSource === 'off'` (no stylesheet is injected at all) or for a type no
- * vault package declares — every rule below falls back to a neutral color/wash rather than
- * requiring the variable, so this file works unchanged whether or not that stylesheet exists.
+ * `--vaire-type-color` (feat/type-colors): set per type by `src/theme/index.ts`'s
+ * `applyTypeColor` as an inline style directly on the element that carries the
+ * `vaire-type-<t>` class (e.g. `style="--vaire-type-color: #b0394a"`) — never a generated
+ * stylesheet (Obsidian's plugin guidelines disallow creating `<style>` elements at runtime).
+ * Removed entirely when `settings.typeColorSource === 'off'` or for a type no vault package
+ * declares — every rule below falls back to a neutral color/wash rather than requiring the
+ * variable, so this file works unchanged whether or not that inline property is set.
  */
 
 /* ---- References (reading mode + live preview) --------------------------------------- */

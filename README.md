@@ -14,9 +14,33 @@ metadata cache, so the editor stays snappy.
 - The [`vaire`](https://github.com/dezemand/vaire) CLI (0.3.x) installed. It is looked up on
   `PATH` and in `~/.local/bin`, `/opt/homebrew/bin`, `/usr/local/bin`; set an explicit path in
   Settings → Vairë if it lives elsewhere.
-- Obsidian 1.7.0 or newer, desktop.
+- Obsidian 1.7.2 or newer, desktop.
 - A vault that contains at least one package root (a directory with `knowledge.toml`), at
   any depth. Files outside a package are left alone.
+
+## What it can access
+
+The plugin's permission footprint follows directly from how it works, not from anything
+incidental:
+
+- **It runs the `vaire` CLI via `child_process`.** This is the whole design: every
+  graph-shaped question (resolving a reference, suggesting a link, listing backlinks,
+  searching, pulling a dependency, …) is answered by spawning `vaire` and reading its JSON
+  output, rather than reimplementing the graph in the plugin. The binary path is
+  configurable in Settings → Vairë (auto-detected on `PATH` and in `~/.local/bin`,
+  `/opt/homebrew/bin`, `/usr/local/bin`, or set explicitly), so nothing about where it looks
+  is hidden or hardcoded.
+- **It reads files outside the vault with `fs`.** A node can live in a dependency package
+  that has been resolved into the local `vaire` store (`~/.vaire/store`) or
+  linked from a checkout elsewhere on disk (`vaire add --link`) — both of which, by
+  definition, sit outside the vault, since the vault only ever holds the packages the user
+  put in it. Rendering an external reference or opening a dependency's page reads that file
+  in place.
+- **It never writes outside the vault.** Every write the plugin makes — new nodes, renames,
+  tombstones, exports, cache files — lands inside the vault (or its `.obsidian/plugins/vaire`
+  folder). Dependency stores and linked checkouts are read-only as far as this plugin is
+  concerned; changes to them happen only through `vaire` itself (e.g. `vaire pull`), run as a
+  regular child process, never through direct filesystem mutation of paths outside the vault.
 
 ## Install
 

@@ -50,7 +50,7 @@ export function registerPropertiesLinks(plugin: VairePlugin): void {
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       mutation.addedNodes.forEach((node) => {
-        if (!(node instanceof HTMLElement)) return;
+        if (!node.instanceOf(HTMLElement)) return;
         if (node.matches('.metadata-property')) {
           schedule(node);
           return;
@@ -98,9 +98,7 @@ function decorateProperty(plugin: VairePlugin, propEl: HTMLElement): void {
   const pkg = plugin.packages.packageFor(file);
   if (!pkg) return; // only decorate files inside a vault package
 
-  const frontmatter = plugin.app.metadataCache.getFileCache(file)?.frontmatter as
-    | Record<string, unknown>
-    | undefined;
+  const frontmatter: Record<string, unknown> | undefined = plugin.app.metadataCache.getFileCache(file)?.frontmatter;
   if (!propertyEdgeKeys(frontmatter).has(key)) return;
 
   const valueEl = propEl.querySelector<HTMLElement>('.metadata-property-value');
@@ -202,8 +200,7 @@ function decoratePillContent(plugin: VairePlugin, repo: string, content: HTMLEle
 function ensureRawTextWrap(content: HTMLElement): HTMLElement {
   const existing = content.querySelector<HTMLElement>(':scope > .vaire-prop-raw-text');
   if (existing) return existing;
-  const wrap = document.createElement('span');
-  wrap.className = 'vaire-prop-raw-text';
+  const wrap = createEl('span', { cls: 'vaire-prop-raw-text' });
   while (content.firstChild) wrap.appendChild(content.firstChild);
   content.appendChild(wrap);
   return wrap;

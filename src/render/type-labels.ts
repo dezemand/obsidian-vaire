@@ -17,7 +17,7 @@ export function registerTypeLabels(plugin: VairePlugin): void {
   plugin.register(() => document.body.classList.remove(HIDE_LINK_TYPES, HIDE_TAB_TYPES));
 
   plugin.addCommand({
-    id: 'vaire-toggle-type-labels',
+    id: 'toggle-type-labels',
     name: 'Toggle type labels',
     callback: async () => {
       const s = plugin.settings;

@@ -84,7 +84,7 @@ function prettify(text: string): string {
     .trim()
     .split(/\s+/)
     .filter(Boolean);
-  return words.map((w) => w[0]!.toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  return words.map((w) => w[0].toUpperCase() + w.slice(1).toLowerCase()).join(' ');
 }
 
 // ---- parseTemplate --------------------------------------------------------------------------

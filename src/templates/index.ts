@@ -20,8 +20,8 @@ function targetPackage(plugin: VairePlugin): PackageInfo | null {
 
 export function registerTemplates(plugin: VairePlugin): void {
   plugin.addCommand({
-    id: 'vaire-new-from-template',
-    name: 'New Vairë node from template…',
+    id: 'new-from-template',
+    name: 'New node from template…',
     checkCallback: (checking) => {
       const pkg = targetPackage(plugin);
       if (!pkg) return false;

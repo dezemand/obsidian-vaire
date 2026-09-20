@@ -83,7 +83,7 @@ export class LocalIndex {
   /** Re-reads one file's frontmatter from the metadata cache and updates (or drops) its entry. */
   rebuildFile(file: TFile): void {
     const cache = this.app.metadataCache.getFileCache(file);
-    const fm = cache?.frontmatter as Record<string, unknown> | undefined;
+    const fm: Record<string, unknown> | undefined = cache?.frontmatter;
     if (!fm || typeof fm.id !== 'string' || typeof fm.type !== 'string') {
       this.dropFile(file.path);
       return;

@@ -16,6 +16,7 @@ import { loadBacklinkContexts, type BacklinkContext } from './backlinks-data';
 import { openBacklinkContext, refForContext, renderBacklinkSnippet } from './backlinks-render';
 import { describeFinding, packageRelativePath, type FindingLike } from './pure-pkg';
 import type VairePlugin from '../main';
+import { applyTypeColor } from '../theme/index';
 
 export const VIEW_TYPE_NODE = 'vaire-node';
 
@@ -144,7 +145,8 @@ export class NodeView extends ItemView {
     const crumb = section.createDiv({ cls: 'vaire-crumb' });
     // `vaire-type-<t>` (feat/type-colors) lets src/theme/index.ts colour this badge the same
     // way as the reading-mode type badge, via `--vaire-type-color`.
-    crumb.createSpan({ cls: `vaire-badge vaire-type-${node.type}`, text: node.type });
+    const typeBadge = crumb.createSpan({ cls: `vaire-badge vaire-type-${node.type}`, text: node.type });
+    applyTypeColor(this.plugin, typeBadge, node.type);
     const idEl = crumb.createEl('code', { cls: 'vaire-nid vaire-copyable', text: node.full });
     idEl.setAttr('title', 'Click to copy');
     idEl.addEventListener('click', () => {

@@ -19,7 +19,7 @@ export function registerGraph(plugin: VairePlugin): void {
   // Unconditionally available, like "Open node panel" — the view itself renders "No file
   // open." / "Not a Vairë node." states rather than hiding the command from the palette.
   plugin.addCommand({
-    id: 'vaire-open-local-graph',
+    id: 'open-local-graph',
     name: 'Open local graph',
     callback: () => void openLocalGraph(plugin),
   });
@@ -27,7 +27,7 @@ export function registerGraph(plugin: VairePlugin): void {
   // Unconditionally available too — `exportLocalGraphToCanvas` shows a Notice for "no active
   // file" / "not a Vairë node" itself, same reasoning as "Open local graph" above.
   plugin.addCommand({
-    id: 'vaire-export-canvas',
+    id: 'export-canvas',
     name: 'Export local graph to canvas',
     callback: () => void exportLocalGraphToCanvas(plugin),
   });

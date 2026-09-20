@@ -282,7 +282,7 @@ async function runCheckForUpdatesCommand(plugin: VairePlugin, pkg: PackageInfo):
 
 export function registerUpdates(plugin: VairePlugin): void {
   plugin.addCommand({
-    id: 'vaire-check-dependency-updates',
+    id: 'check-dependency-updates',
     name: 'Check for dependency updates',
     checkCallback: (checking) => {
       const pkg = activeFilePackage(plugin);
@@ -293,8 +293,8 @@ export function registerUpdates(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-pull-locked',
-    name: 'Reproduce lockfile (vaire pull --locked)',
+    id: 'pull-locked',
+    name: 'Reproduce lockfile (pull --locked)',
     checkCallback: (checking) => {
       const pkg = activeFilePackage(plugin);
       if (!pkg) return false;

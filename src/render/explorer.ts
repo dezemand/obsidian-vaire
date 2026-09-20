@@ -35,6 +35,7 @@ import { TFile } from 'obsidian';
 import type VairePlugin from '../main';
 import type { LocalNode, PackageInfo } from '../packages';
 import { navDecorationKey, navDisplayText, shouldDecorateRow } from './pure';
+import { applyTypeColor } from '../theme/index';
 
 const DEBOUNCE_MS = 100;
 const ROW_SELECTOR = '.nav-file-title, .nav-folder-title';
@@ -59,7 +60,7 @@ export function registerExplorerBadges(plugin: VairePlugin): void {
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       mutation.addedNodes.forEach((node) => {
-        if (!(node instanceof HTMLElement)) return;
+        if (!node.instanceOf(HTMLElement)) return;
         if (node.matches(ROW_SELECTOR)) {
           schedule(node);
           return;
@@ -142,8 +143,7 @@ function decorateFileRow(plugin: VairePlugin, titleEl: HTMLElement, opts: { forc
 
   let nameEl = titleEl.querySelector<HTMLElement>(':scope > .vaire-nav-name');
   if (!nameEl) {
-    nameEl = document.createElement('span');
-    nameEl.className = 'vaire-nav-name';
+    nameEl = createEl('span', { cls: 'vaire-nav-name' });
     contentEl.insertAdjacentElement('afterend', nameEl);
   }
   const text = shown ?? node.name;
@@ -156,12 +156,13 @@ function decorateFileRow(plugin: VairePlugin, titleEl: HTMLElement, opts: { forc
   let badge = titleEl.querySelector<HTMLElement>(':scope > .vaire-nav-badge');
   if (plugin.settings.explorerBadges && mode !== 'id') {
     if (!badge) {
-      badge = document.createElement('span');
+      badge = createEl('span');
       nameEl.insertAdjacentElement('afterend', badge);
     }
     const cls = `vaire-nav-badge vaire-type-${node.type}`;
     if (badge.className !== cls) badge.className = cls;
     if (badge.textContent !== node.type) badge.textContent = node.type;
+    applyTypeColor(plugin, badge, node.type);
   } else {
     badge?.remove();
   }
@@ -204,9 +205,7 @@ function decorateFolderRow(plugin: VairePlugin, folderEl: HTMLElement): void {
   folderEl.dataset.vaireNavPkg = tooltip;
 
   if (!badge) {
-    badge = document.createElement('span');
-    badge.className = 'vaire-nav-badge vaire-nav-pkg-badge';
-    badge.textContent = 'pkg';
+    badge = createEl('span', { cls: 'vaire-nav-badge vaire-nav-pkg-badge', text: 'pkg' });
     contentEl.insertAdjacentElement('afterend', badge);
   }
   badge.setAttribute('aria-label', tooltip);

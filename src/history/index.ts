@@ -34,7 +34,7 @@ async function openNodeHistory(plugin: VairePlugin): Promise<void> {
 
 export function registerHistory(plugin: VairePlugin): void {
   plugin.addCommand({
-    id: 'vaire-open-node-history',
+    id: 'open-node-history',
     name: 'Show node history',
     callback: () => void openNodeHistory(plugin),
   });

@@ -50,8 +50,8 @@ function currentNode(plugin: VairePlugin): { pkg: PackageInfo; node: LocalNode }
 
 export function registerAuthoring(plugin: VairePlugin): void {
   plugin.addCommand({
-    id: 'vaire-new-node',
-    name: 'New Vairë node',
+    id: 'new-node',
+    name: 'New node',
     checkCallback: (checking) => {
       const pkg = targetPackage(plugin);
       if (!pkg) return false;
@@ -61,7 +61,7 @@ export function registerAuthoring(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-create-entity-from-loose-end',
+    id: 'create-entity-from-loose-end',
     name: 'Create entity from loose end at cursor',
     editorCheckCallback: (checking, editor, ctx) => {
       const file = ctx.file;
@@ -95,7 +95,7 @@ export function registerAuthoring(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-add-alias',
+    id: 'add-alias',
     name: 'Add alias to this node',
     checkCallback: (checking) => {
       const found = currentNode(plugin);
@@ -106,7 +106,7 @@ export function registerAuthoring(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-add-edge',
+    id: 'add-edge',
     name: 'Add edge to this node',
     checkCallback: (checking) => {
       const found = currentNode(plugin);
@@ -117,7 +117,7 @@ export function registerAuthoring(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-rename-node-id',
+    id: 'rename-node-id',
     name: 'Rename node id…',
     checkCallback: (checking) => {
       const found = currentNode(plugin);
@@ -128,7 +128,7 @@ export function registerAuthoring(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-insert-loose-end',
+    id: 'insert-loose-end',
     name: 'Insert loose end',
     editorCheckCallback: (checking, editor, ctx) => {
       const file = ctx.file;
@@ -149,7 +149,7 @@ export function registerAuthoring(plugin: VairePlugin): void {
 
 export function registerSupersede(plugin: VairePlugin): void {
   plugin.addCommand({
-    id: 'vaire-supersede-node',
+    id: 'supersede-node',
     name: 'Supersede this node with…',
     checkCallback: (checking) => {
       const file = plugin.app.workspace.getActiveFile();

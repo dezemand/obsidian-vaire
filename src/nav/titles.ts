@@ -19,6 +19,7 @@ import { MarkdownView, TFile, type WorkspaceLeaf } from 'obsidian';
 import type VairePlugin from '../main';
 import type { LocalNode } from '../packages';
 import { titleKey, titleText, type TabTitleMode } from './pure';
+import { applyTypeColor } from '../theme/index';
 
 const DEBOUNCE_MS = 100;
 const TITLE_ORIGINAL_CLASS = 'vaire-title-original';
@@ -83,13 +84,13 @@ function decorateLeaf(plugin: VairePlugin, leaf: WorkspaceLeaf, mode: TabTitleMo
   const basename = file?.basename ?? '';
 
   const tabHost = (leaf as unknown as LeafWithTabHeader).tabHeaderInnerTitleEl;
-  if (tabHost) decorateHost(tabHost, node, mode, basename);
+  if (tabHost) decorateHost(plugin, tabHost, node, mode, basename);
 
   const viewHost = (view as unknown as ViewWithTitleEl).titleEl;
-  if (viewHost) decorateHost(viewHost, node, mode, basename);
+  if (viewHost) decorateHost(plugin, viewHost, node, mode, basename);
 }
 
-function decorateHost(hostEl: HTMLElement, node: LocalNode | null, mode: TabTitleMode, basename: string): void {
+function decorateHost(plugin: VairePlugin, hostEl: HTMLElement, node: LocalNode | null, mode: TabTitleMode, basename: string): void {
   if (!hostEl.isConnected) return;
 
   const key = titleKey(node, node?.type, basename, mode);
@@ -105,25 +106,19 @@ function decorateHost(hostEl: HTMLElement, node: LocalNode | null, mode: TabTitl
   while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
 
   if (node) {
-    const badge = document.createElement('span');
     // `.vaire-badge` (styles/00-base.css) gives the small uppercase pill look, including its
     // `--vaire-type-color` pickup for the `vaire-type-<t>` class (feat/type-colors).
-    badge.className = `${TITLE_BADGE_CLASS} vaire-badge vaire-type-${node.type}`;
-    badge.textContent = node.type;
-    wrap.appendChild(badge);
+    const badge = wrap.createEl('span', { cls: `${TITLE_BADGE_CLASS} vaire-badge vaire-type-${node.type}`, text: node.type });
+    applyTypeColor(plugin, badge, node.type);
   }
 
-  const text = document.createElement('span');
-  text.className = TITLE_TEXT_CLASS;
-  text.textContent = titleText(node, basename, mode);
-  wrap.appendChild(text);
+  wrap.createEl('span', { cls: TITLE_TEXT_CLASS, text: titleText(node, basename, mode) });
 }
 
 function ensureWrap(hostEl: HTMLElement): HTMLElement {
   const next = hostEl.nextElementSibling;
-  if (next instanceof HTMLElement && next.classList.contains(TITLE_WRAP_CLASS)) return next;
-  const wrap = document.createElement('span');
-  wrap.className = TITLE_WRAP_CLASS;
+  if (next?.instanceOf(HTMLElement) && next.classList.contains(TITLE_WRAP_CLASS)) return next;
+  const wrap = createEl('span', { cls: TITLE_WRAP_CLASS });
   hostEl.insertAdjacentElement('afterend', wrap);
   return wrap;
 }
@@ -133,5 +128,5 @@ function clearHost(hostEl: HTMLElement): void {
   delete hostEl.dataset.vaireTitle;
   hostEl.classList.remove(TITLE_ORIGINAL_CLASS);
   const next = hostEl.nextElementSibling;
-  if (next instanceof HTMLElement && next.classList.contains(TITLE_WRAP_CLASS)) next.remove();
+  if (next?.instanceOf(HTMLElement) && next.classList.contains(TITLE_WRAP_CLASS)) next.remove();
 }

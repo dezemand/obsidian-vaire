@@ -1,9 +1,9 @@
 {
   "id": "vaire",
   "name": "Vaire",
-  "version": "0.1.0",
-  "minAppVersion": "1.7.0",
-  "description": "Vairë knowledge packages inside Obsidian: typed references, suggestions, dependencies, catalog and registries via the vaire CLI.",
+  "version": "0.1.1",
+  "minAppVersion": "1.7.2",
+  "description": "Vairë knowledge packages in your vault: typed references, suggestions, dependency handling, catalog and registry browsing, via the vaire CLI.",
   "author": "Maarten van Ittersum",
   "authorUrl": "https://github.com/dezemand",
   "isDesktopOnly": true

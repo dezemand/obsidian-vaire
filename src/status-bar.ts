@@ -33,7 +33,7 @@ export function registerStatusBar(plugin: VairePlugin): void {
   plugin.registerInterval(window.setInterval(render, POLL_MS));
 
   plugin.addCommand({
-    id: 'vaire-reset-cli-stats',
+    id: 'reset-cli-stats',
     name: 'Reset CLI call counter',
     callback: () => {
       plugin.cli.resetStats();

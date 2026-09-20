@@ -11,7 +11,7 @@
 //
 // Every crumb but the last is a `createRefElement` (see src/render/ref-el.ts) except the
 // package crumb, which isn't a node reference at all — clicking it opens the package index via
-// `app.commands.executeCommandById('vaire:vaire-open-package-index')` (the command
+// `app.commands.executeCommandById('vaire:open-package-index')` (the command
 // `src/views/package-node.ts` registers), guarded since `App.commands` isn't in the `obsidian`
 // typings.
 
@@ -34,23 +34,18 @@ interface ViewWithTitleEl {
 function openPackageIndexCommand(plugin: VairePlugin): void {
   const commands = (plugin.app as unknown as { commands?: { executeCommandById?: (id: string) => boolean } }).commands;
   if (typeof commands?.executeCommandById === 'function') {
-    commands.executeCommandById('vaire:vaire-open-package-index');
+    commands.executeCommandById('vaire:open-package-index');
   }
 }
 
 function buildSeparator(): HTMLElement {
-  const span = document.createElement('span');
-  span.className = 'vaire-breadcrumb-sep';
+  const span = createEl('span', { cls: 'vaire-breadcrumb-sep', text: '›' });
   span.setAttribute('aria-hidden', 'true');
-  span.textContent = '›';
   return span;
 }
 
 function buildPackageCrumb(plugin: VairePlugin, pkg: PackageInfo): HTMLElement {
-  const el = document.createElement('span');
-  el.className = 'vaire-breadcrumb-pkg';
-  el.textContent = pkg.name;
-  el.title = `Open ${pkg.name} package index`;
+  const el = createEl('span', { cls: 'vaire-breadcrumb-pkg', text: pkg.name, title: `Open ${pkg.name} package index` });
   el.tabIndex = 0;
   el.addEventListener('click', () => openPackageIndexCommand(plugin));
   el.addEventListener('keydown', (ev) => {
@@ -64,11 +59,11 @@ function buildPackageCrumb(plugin: VairePlugin, pkg: PackageInfo): HTMLElement {
 
 function buildContainerCrumb(plugin: VairePlugin, pkg: PackageInfo, node: LocalNode, crumb: ScopeChainCrumb): HTMLElement {
   if (crumb.name === null) {
-    const span = document.createElement('span');
-    span.className = 'vaire-link-missing vaire-breadcrumb-missing';
-    span.textContent = crumb.id;
-    span.title = `not found in this package: ${crumb.id}`;
-    return span;
+    return createEl('span', {
+      cls: 'vaire-link-missing vaire-breadcrumb-missing',
+      text: crumb.id,
+      title: `not found in this package: ${crumb.id}`,
+    });
   }
   const ref = parseRef(crumb.id);
   if (ref && ref.kind === 'id') {
@@ -76,9 +71,7 @@ function buildContainerCrumb(plugin: VairePlugin, pkg: PackageInfo, node: LocalN
   }
   // Not expected in practice (a container's own full id always parses), but keep the crumb
   // visible rather than dropping it silently.
-  const span = document.createElement('span');
-  span.textContent = crumb.id;
-  return span;
+  return createEl('span', { text: crumb.id });
 }
 
 /** Builds the full trail `div.vaire-breadcrumbs`, or `null` when `node` isn't scoped at all. */
@@ -90,8 +83,7 @@ export function buildBreadcrumbTrail(plugin: VairePlugin, pkg: PackageInfo, node
     return found ? { name: found.name, scope: found.scope } : null;
   }, 8);
 
-  const trail = document.createElement('div');
-  trail.className = 'vaire-breadcrumbs';
+  const trail = createDiv({ cls: 'vaire-breadcrumbs' });
   if (result.cycle) trail.title = 'Scope chain contains a cycle — truncated';
 
   trail.appendChild(buildPackageCrumb(plugin, pkg));
@@ -101,10 +93,7 @@ export function buildBreadcrumbTrail(plugin: VairePlugin, pkg: PackageInfo, node
   }
   trail.appendChild(buildSeparator());
 
-  const current = document.createElement('span');
-  current.className = 'vaire-breadcrumb-current';
-  current.textContent = node.name;
-  trail.appendChild(current);
+  trail.createSpan({ cls: 'vaire-breadcrumb-current', text: node.name });
 
   return trail;
 }
@@ -158,7 +147,7 @@ function clearAllViews(plugin: VairePlugin): void {
 
 function anchorFor(viewHost: HTMLElement): HTMLElement {
   const next = viewHost.nextElementSibling;
-  if (next instanceof HTMLElement && next.classList.contains(TITLE_WRAP_CLASS)) return next;
+  if (next?.instanceOf(HTMLElement) && next.classList.contains(TITLE_WRAP_CLASS)) return next;
   return viewHost;
 }
 

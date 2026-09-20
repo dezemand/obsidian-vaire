@@ -72,7 +72,9 @@ const CITED_CHANGES_KEYS = ['cited_changes', 'citedChanges', 'adopted_changes', 
 function extractCitedChanges(o: Record<string, unknown>): string[] | undefined {
   for (const key of CITED_CHANGES_KEYS) {
     const value = o[key];
-    if (Array.isArray(value) && value.every((v) => typeof v === 'string')) return value as string[];
+    // A type-predicate callback (rather than a plain boolean one) lets `.every` narrow the
+    // whole array to `string[]` on its own, so the match below needs no assertion.
+    if (Array.isArray(value) && value.every((v): v is string => typeof v === 'string')) return value;
   }
   return undefined;
 }

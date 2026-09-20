@@ -22,7 +22,7 @@ export function registerSearchPanel(plugin: VairePlugin): void {
   plugin.registerView(VIEW_TYPE_SEARCH, (leaf) => new SearchView(leaf, plugin));
 
   plugin.addCommand({
-    id: 'vaire-open-search-panel',
+    id: 'open-search-panel',
     name: 'Open search panel',
     callback: () => void openSearchPanel(plugin),
   });

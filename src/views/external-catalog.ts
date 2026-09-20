@@ -178,13 +178,13 @@ export function registerExternalAndCatalogViews(plugin: VairePlugin): void {
   );
 
   plugin.addCommand({
-    id: 'vaire-open-catalog',
+    id: 'open-catalog',
     name: 'Open catalog and registries',
     callback: () => void CatalogView.open(plugin),
   });
 
   plugin.addCommand({
-    id: 'vaire-open-external-node',
+    id: 'open-external-node',
     name: 'Open a node from any catalog package…',
     callback: () => void openExternalNodeCommand(plugin),
   });

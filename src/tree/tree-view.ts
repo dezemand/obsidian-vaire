@@ -7,6 +7,7 @@ import { openFileAtLine } from '../navigate';
 import { buildTree, filterTree, pathToNode, type NodeLike, type TreeNode, type TreeNodeKind, type TreeOptions } from './pure';
 import { VIEW_TYPE_NODE } from '../views/node-view';
 import type VairePlugin from '../main';
+import { applyTypeColor } from '../theme/index';
 
 export const VIEW_TYPE_TREE = 'vaire-tree';
 
@@ -254,7 +255,8 @@ export class TreeView extends ItemView {
     }
 
     if (node.kind === 'node') {
-      row.createSpan({ cls: `vaire-tree-type-dot vaire-type-${node.type}` });
+      const typeDot = row.createSpan({ cls: `vaire-tree-type-dot vaire-type-${node.type}` });
+      if (node.type) applyTypeColor(this.plugin, typeDot, node.type);
     } else if (node.kind === 'package') {
       setIcon(row.createSpan({ cls: 'vaire-tree-icon' }), 'package');
     }
@@ -368,14 +370,14 @@ export class TreeView extends ItemView {
    *  hides this menu item instead of throwing. */
   private supersedeCommandAvailable(): boolean {
     const commands = (this.app as unknown as { commands?: { commands?: Record<string, unknown> } }).commands;
-    return Boolean(commands?.commands?.['vaire:vaire-supersede-node']);
+    return Boolean(commands?.commands?.['vaire:supersede-node']);
   }
 
   private async supersedeVia(local: LocalNode): Promise<void> {
     await openFileAtLine(this.app, local.file);
     const commands = (this.app as unknown as { commands?: { executeCommandById?: (id: string) => unknown } }).commands;
     if (commands?.executeCommandById) {
-      commands.executeCommandById('vaire:vaire-supersede-node');
+      commands.executeCommandById('vaire:supersede-node');
     } else {
       new Notice('Vairë: the supersede command is not available.');
     }

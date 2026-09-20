@@ -29,7 +29,7 @@ export function registerWorkbench(plugin: VairePlugin): void {
   plugin.registerView(VIEW_TYPE_WORKBENCH, (leaf) => new WorkbenchView(leaf, plugin));
 
   plugin.addCommand({
-    id: 'vaire-open-unresolved-workbench',
+    id: 'open-unresolved-workbench',
     name: 'Open loose-end workbench',
     checkCallback: (checking) => {
       const pkg = activePackageOrFirst(plugin);

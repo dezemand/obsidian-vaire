@@ -12,6 +12,7 @@ import { createRefElement } from './ref-el';
 import { humanizeKey } from './pure';
 import { insertBreadcrumbTrail } from '../nav/breadcrumbs';
 import type VairePlugin from '../main';
+import { applyTypeColor } from '../theme/index';
 
 /**
  * Inserts `div.vaire-node-header` before `el`'s leading `h1`, if any and if not already done.
@@ -42,17 +43,13 @@ export async function insertNodeHeader(plugin: VairePlugin, el: HTMLElement, ctx
 }
 
 function textSpan(text: string, cls: string): HTMLSpanElement {
-  const span = document.createElement('span');
-  span.className = cls;
-  span.textContent = text;
-  return span;
+  return createEl('span', { cls, text });
 }
 
 function buildHeader(plugin: VairePlugin, pkg: PackageInfo, node: LocalNode): HTMLElement {
-  const header = document.createElement('div');
-  header.className = 'vaire-node-header';
+  const header = createEl('div', { cls: 'vaire-node-header' });
 
-  header.appendChild(buildCrumb(node));
+  header.appendChild(buildCrumb(plugin, node));
   header.appendChild(buildAddress(node));
 
   const scopeLine = buildScopeLine(plugin, pkg, node);
@@ -74,24 +71,20 @@ function buildHeader(plugin: VairePlugin, pkg: PackageInfo, node: LocalNode): HT
   return header;
 }
 
-function buildCrumb(node: LocalNode): HTMLElement {
-  const crumb = document.createElement('div');
-  crumb.className = 'vaire-crumb';
+function buildCrumb(plugin: VairePlugin, node: LocalNode): HTMLElement {
+  const crumb = createEl('div', { cls: 'vaire-crumb' });
 
-  const addr = document.createElement('span');
-  addr.className = 'vaire-crumb-addr';
+  const addr = crumb.createEl('span', { cls: 'vaire-crumb-addr' });
   // Type gets its own span (feat/type-colors) so `.vaire-type-<t>` can colour just the type
   // portion of the crumb — `--vaire-type-color`, set by src/theme/index.ts, per DESIGN.md
   // "type badge, type:id" (renderer-conventions.md §1's crumb line).
-  addr.appendChild(textSpan(node.type, `vaire-badge vaire-crumb-type vaire-type-${node.type}`));
+  const typeBadge = addr.createEl('span', { cls: `vaire-badge vaire-crumb-type vaire-type-${node.type}`, text: node.type });
+  applyTypeColor(plugin, typeBadge, node.type);
   addr.appendChild(document.createTextNode(` / ${node.id}`));
-  crumb.appendChild(addr);
 
   const dot = statusDot(node.frontmatter.status);
   if (dot) {
-    const dotEl = document.createElement('span');
-    dotEl.className = `vaire-status-dot dot-${dot}`;
-    crumb.appendChild(dotEl);
+    crumb.createEl('span', { cls: `vaire-status-dot dot-${dot}` });
   }
 
   const status = node.frontmatter.status;
@@ -111,10 +104,7 @@ function buildCrumb(node: LocalNode): HTMLElement {
 }
 
 function buildAddress(node: LocalNode): HTMLElement {
-  const addr = document.createElement('code');
-  addr.className = 'vaire-addr';
-  addr.textContent = node.full;
-  addr.title = 'Click to copy';
+  const addr = createEl('code', { cls: 'vaire-addr', text: node.full, title: 'Click to copy' });
   addr.tabIndex = 0;
   addr.addEventListener('click', () => {
     navigator.clipboard.writeText(node.full).then(
@@ -128,8 +118,7 @@ function buildAddress(node: LocalNode): HTMLElement {
 function buildScopeLine(plugin: VairePlugin, pkg: PackageInfo, node: LocalNode): HTMLElement | null {
   if (!node.scope) return null;
   const scopeRef = parseRef(node.scope);
-  const line = document.createElement('div');
-  line.className = 'vaire-scope';
+  const line = createDiv({ cls: 'vaire-scope' });
   line.appendChild(document.createTextNode('in '));
   if (scopeRef && scopeRef.kind === 'id') {
     line.appendChild(createRefElement(plugin, scopeRef, { repo: pkg.absRoot }));
@@ -141,8 +130,7 @@ function buildScopeLine(plugin: VairePlugin, pkg: PackageInfo, node: LocalNode):
 
 function buildSupersededBanner(plugin: VairePlugin, pkg: PackageInfo, node: LocalNode): HTMLElement | null {
   if (!node.supersededBy) return null;
-  const banner = document.createElement('div');
-  banner.className = 'vaire-superseded-banner';
+  const banner = createDiv({ cls: 'vaire-superseded-banner' });
   banner.appendChild(document.createTextNode('This node is a tombstone — references redirect to '));
   const ref = parseRef(node.supersededBy);
   if (ref && ref.kind === 'id') {
@@ -155,8 +143,7 @@ function buildSupersededBanner(plugin: VairePlugin, pkg: PackageInfo, node: Loca
 
 function buildAliases(node: LocalNode): HTMLElement | null {
   if (!node.aliases.length) return null;
-  const wrap = document.createElement('div');
-  wrap.className = 'vaire-aliases';
+  const wrap = createDiv({ cls: 'vaire-aliases' });
   for (const alias of node.aliases) {
     wrap.appendChild(textSpan(alias, 'vaire-alias-chip'));
   }
@@ -167,28 +154,21 @@ function buildEdges(plugin: VairePlugin, pkg: PackageInfo, node: LocalNode): HTM
   const edges = extractFrontmatterEdges(node.frontmatter);
   if (!edges.length) return null;
 
-  const container = document.createElement('div');
-  container.className = 'vaire-edges';
+  const container = createDiv({ cls: 'vaire-edges' });
 
   for (const edge of edges) {
-    const row = document.createElement('div');
-    row.className = 'vaire-edge-row';
+    const row = container.createDiv({ cls: 'vaire-edge-row' });
     row.appendChild(textSpan(humanizeKey(edge.key), 'vaire-edge-key'));
 
-    const values = document.createElement('div');
-    values.className = 'vaire-edge-values';
+    const values = row.createDiv({ cls: 'vaire-edge-values' });
     for (const value of edge.values) {
-      const valueEl = document.createElement('div');
-      valueEl.className = 'vaire-edge-value';
+      const valueEl = values.createDiv({ cls: 'vaire-edge-value' });
       if (value.kind === 'text') {
         valueEl.textContent = value.text;
       } else {
         valueEl.appendChild(createRefElement(plugin, value, { repo: pkg.absRoot, originScope: node.scope }));
       }
-      values.appendChild(valueEl);
     }
-    row.appendChild(values);
-    container.appendChild(row);
   }
 
   return container;

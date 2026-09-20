@@ -18,8 +18,8 @@ export function registerTree(plugin: VairePlugin): void {
   plugin.registerView(VIEW_TYPE_TREE, (leaf) => new TreeView(leaf, plugin));
 
   plugin.addCommand({
-    id: 'vaire-open-tree',
-    name: 'Open Vairë explorer',
+    id: 'open-tree',
+    name: 'Open node explorer',
     callback: () => void openTree(plugin),
   });
 }

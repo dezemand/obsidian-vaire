@@ -58,10 +58,6 @@ interface Position {
   y: number;
 }
 
-function errMessage(err: unknown): string {
-  return err instanceof Error ? err.message : String(err);
-}
-
 export class PackageGraphView extends ItemView {
   private readonly plugin: VairePlugin;
   private packageDir = '';

@@ -29,7 +29,7 @@ export function registerDepGraph(plugin: VairePlugin): void {
   plugin.registerView(VIEW_TYPE_DEPGRAPH, (leaf) => new DepGraphView(leaf, plugin));
 
   plugin.addCommand({
-    id: 'vaire-open-dependency-view',
+    id: 'open-dependency-view',
     name: 'Open dependency view',
     checkCallback: (checking) => {
       const pkg = activePackageOrFirst(plugin);

@@ -147,7 +147,7 @@ async function readGroupLines(
 }
 
 function nameFromResolve(result: ResolveResult | null, fallbackId: string): string {
-  const fmName = (result?.frontmatter as Record<string, unknown> | undefined)?.name;
+  const fmName = result?.frontmatter.name;
   if (typeof fmName === 'string' && fmName.trim()) return fmName.trim();
   if (result) {
     const base = basenameNoExt(result.path);

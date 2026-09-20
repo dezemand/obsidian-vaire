@@ -187,21 +187,26 @@ function defaultExec(
   });
 }
 
+/** Narrows `unknown` (typically straight off `JSON.parse`, which returns `any`) to a plain
+ *  object, so its properties can be checked without resorting to `any`. */
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
 function parseEnvelope(text: string): VaireErrorEnvelope | null {
   const trimmed = text.trim();
   if (!trimmed) return null;
   try {
-    const parsed = JSON.parse(trimmed);
+    const parsed: unknown = JSON.parse(trimmed);
     if (
-      parsed &&
-      typeof parsed === 'object' &&
+      isRecord(parsed) &&
       'error' in parsed &&
-      parsed.error &&
+      isRecord(parsed.error) &&
       typeof parsed.error.code === 'number' &&
       typeof parsed.error.kind === 'string' &&
       typeof parsed.error.message === 'string'
     ) {
-      return parsed as VaireErrorEnvelope;
+      return parsed as unknown as VaireErrorEnvelope;
     }
   } catch {
     // not JSON — fall through
@@ -224,8 +229,8 @@ function parseOutcomeJson<T>(stdout: string): T | null {
   const trimmed = stdout.trim();
   if (!trimmed.startsWith('{')) return null;
   try {
-    const parsed = JSON.parse(trimmed);
-    if (parsed && typeof parsed === 'object' && !('error' in parsed)) return parsed as T;
+    const parsed: unknown = JSON.parse(trimmed);
+    if (isRecord(parsed) && !('error' in parsed)) return parsed as T;
   } catch {
     // not JSON
   }

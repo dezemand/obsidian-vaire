@@ -38,7 +38,7 @@ type PopoverTarget =
 function closestTarget(node: EventTarget | null): HTMLElement | null {
   if (!(node instanceof Element)) return null;
   const found = node.closest(TARGET_SELECTOR);
-  return found instanceof HTMLElement ? found : null;
+  return found?.instanceOf(HTMLElement) ? found : null;
 }
 
 /** Reads back exactly the data `ref-el.ts`/`live.ts` attach to a hoverable element. */

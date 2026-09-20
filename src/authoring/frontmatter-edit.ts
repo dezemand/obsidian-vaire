@@ -15,6 +15,13 @@ export interface EditResult {
   changed: boolean;
 }
 
+/** `Array.isArray` narrows to `any[]` (per `lib.es5.d.ts`), which turns every spread/access
+ *  below into an unsafe-`any` operation even though `fm`'s values are only ever `unknown`. This
+ *  narrows to `unknown[]` instead, so the existing-list branches below stay fully typed. */
+function isUnknownArray(value: unknown): value is unknown[] {
+  return Array.isArray(value);
+}
+
 /**
  * Appends `alias` to `fm.aliases`, skipping a case-insensitive duplicate. Creates the list if
  * `aliases` is absent; upgrades a scalar `aliases: Foo` to a two-item list `[Foo, alias]` (same
@@ -27,7 +34,7 @@ export function addAlias(fm: Record<string, unknown>, alias: string): EditResult
   const needle = trimmed.toLowerCase();
 
   const existing = fm.aliases;
-  if (Array.isArray(existing)) {
+  if (isUnknownArray(existing)) {
     const isDuplicate = existing.some((a) => typeof a === 'string' && a.toLowerCase() === needle);
     if (isDuplicate) return { changed: false };
     fm.aliases = [...existing, trimmed];
@@ -62,7 +69,7 @@ export function addEdge(fm: Record<string, unknown>, key: string, value: string)
     fm[trimmedKey] = trimmedValue;
     return { changed: true };
   }
-  if (Array.isArray(existing)) {
+  if (isUnknownArray(existing)) {
     const isDuplicate = existing.some((v) => v === trimmedValue);
     if (isDuplicate) return { changed: false };
     fm[trimmedKey] = [...existing, trimmedValue];

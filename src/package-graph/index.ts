@@ -28,7 +28,7 @@ export function registerPackageGraph(plugin: VairePlugin): void {
   plugin.registerView(VIEW_TYPE_PACKAGE_GRAPH, (leaf) => new PackageGraphView(leaf, plugin));
 
   plugin.addCommand({
-    id: 'vaire-open-package-graph',
+    id: 'open-package-graph',
     name: 'Open package graph',
     checkCallback: (checking) => {
       const pkg = activePackageOrFirst(plugin);

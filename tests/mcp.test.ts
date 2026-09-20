@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { EventEmitter } from 'node:events';
+import { installDom } from './fakes/dom';
 import { VaireError } from '../src/cli';
 import { McpClient, type SpawnFn } from '../src/mcp/client';
 import {
@@ -11,6 +12,15 @@ import {
   toolArgs,
 } from '../src/mcp/pure';
 import { McpClientPool } from '../src/mcp/pool';
+
+// `src/mcp/client.ts`/`src/mcp/pool.ts` use `window.setTimeout`/`window.clearTimeout` (rather
+// than the ambiguous bare global, which resolves to Node's `NodeJS.Timeout`-returning overload
+// under this project's `types: ["node", "bun"]`) — real Obsidian always provides `window`, but
+// this suite runs these modules standalone, so it needs the same fake install every other
+// DOM-touching suite uses (tests/fakes/dom.ts), even though nothing here otherwise needs a DOM.
+// Safe to call before any test body runs: neither module touches `window` at import time, only
+// inside methods invoked once a test actually calls them.
+installDom();
 
 // ---- LineBuffer -----------------------------------------------------------------------
 

@@ -485,7 +485,7 @@ function findingsAtLine(findings: FindingLike[], relPath: string, line1: number)
 
 export function registerFixCommand(plugin: VairePlugin): void {
   plugin.addCommand({
-    id: 'vaire-fix-finding-at-cursor',
+    id: 'fix-finding-at-cursor',
     name: 'Fix check finding at cursor',
     editorCheckCallback: (checking, editor, ctx) => {
       const file = ctx.file;

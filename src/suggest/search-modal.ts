@@ -35,7 +35,7 @@ export class VaireSearchModal extends SuggestModal<SearchHit> {
   }
 
   onOpen(): void {
-    super.onOpen();
+    void super.onOpen();
     if (!this.initialQuery) return;
     this.inputEl.value = this.initialQuery;
     this.inputEl.dispatchEvent(new Event('input', { bubbles: true }));

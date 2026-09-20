@@ -39,6 +39,7 @@ import { Decoration, type DecorationSet, EditorView, ViewPlugin, type ViewUpdate
 import { parseRef, type IdRef, type LooseRef } from '../ids';
 import { resolveLocalRef, type LocalNode, type PackageInfo } from '../packages';
 import type VairePlugin from '../main';
+import { applyTypeColor } from '../theme/index';
 import {
   chooseLivePreviewDisplayText,
   computeFencedLines,
@@ -96,6 +97,10 @@ class VaireLinkWidget extends WidgetType {
     private readonly text: string,
     private readonly title: string,
     private readonly attrs: Readonly<Record<string, string>>,
+    /** Set for an id-ref widget (not a loose end) — colours the built element via
+     *  src/theme/index.ts, the same as every other `vaire-type-<t>` element. Not part of `eq`:
+     *  the type it would resolve to is already reflected in `cls`. */
+    private readonly colorType?: { plugin: VairePlugin; type: string },
   ) {
     super();
   }
@@ -112,7 +117,7 @@ class VaireLinkWidget extends WidgetType {
   }
 
   toDOM(): HTMLElement {
-    const el = document.createElement(this.tag);
+    const el = createEl(this.tag);
     el.className = this.cls;
     if (this.title) {
       el.title = this.title;
@@ -120,6 +125,7 @@ class VaireLinkWidget extends WidgetType {
     }
     for (const [k, v] of Object.entries(this.attrs)) el.setAttribute(k, v);
     el.textContent = this.text;
+    if (this.colorType) applyTypeColor(this.colorType.plugin, el, this.colorType.type);
     return el;
   }
 
@@ -213,7 +219,7 @@ function buildIdWidget(
     'data-vaire-repo': pkg.absRoot,
   };
   if (ref.pkg) attrs['data-vaire-pkg'] = ref.pkg;
-  return new VaireLinkWidget('a', cls, text, title, attrs);
+  return new VaireLinkWidget('a', cls, text, title, attrs, { plugin, type: ref.type });
 }
 
 function collectItems(
@@ -245,9 +251,10 @@ function collectItems(
     if (isInlineCodeAtColumn(line.text, matchStart - line.from)) continue;
 
     const onCursorLine = lineIntersectsSelection(line.from, line.to, selRanges);
-    const useReplace = inlineNames && !onCursorLine && !!pkg;
 
-    if (!useReplace) {
+    // Equivalent to `!(inlineNames && !onCursorLine && pkg)` — every path through this block
+    // ends in `continue`, so TS narrows `pkg` to non-null below without an assertion.
+    if (!inlineNames || onCursorLine || !pkg) {
       if (onCursorLine && !inlineNames) continue; // A: don't disturb the line being edited
 
       if (ref.kind === 'loose') {
@@ -278,10 +285,7 @@ function collectItems(
       continue;
     }
 
-    const widget =
-      ref.kind === 'loose'
-        ? buildLooseWidget(ref, pkg as PackageInfo)
-        : buildIdWidget(plugin, view, pkg as PackageInfo, ref, originScope);
+    const widget = ref.kind === 'loose' ? buildLooseWidget(ref, pkg) : buildIdWidget(plugin, view, pkg, ref, originScope);
     out.push({ kind: 'replace', from: matchStart, to: matchEnd, widget });
   }
 }

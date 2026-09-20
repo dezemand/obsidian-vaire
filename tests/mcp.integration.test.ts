@@ -10,9 +10,15 @@
 // can exit cleanly.
 
 import { expect, test } from 'bun:test';
+import { installDom } from './fakes/dom';
 import { VaireCli, childEnv } from '../src/cli';
 import { McpClient } from '../src/mcp/client';
 import { percentile } from '../src/mcp/pure';
+
+// See the same call in mcp.test.ts: `McpClient`/`McpClientPool` call `window.setTimeout`/
+// `window.clearTimeout`, which needs a `window` to exist even though this suite is otherwise
+// DOM-free.
+installDom();
 
 const REPO = process.env.VAIRE_TEST_REPO;
 

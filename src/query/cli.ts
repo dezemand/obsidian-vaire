@@ -106,7 +106,7 @@ export async function evaluateCli(
     candidates = await hydrate(plugin, pkg.absRoot, result.results);
   } else {
     candidates = pkg.index.all().map((n) => ({
-      ref: { kind: 'id', type: n.type, id: n.id, scope: n.scope, full: n.full, local: n.full } as IdRef,
+      ref: { kind: 'id', type: n.type, id: n.id, scope: n.scope, full: n.full, local: n.full },
       name: n.name,
       frontmatter: n.frontmatter,
     }));

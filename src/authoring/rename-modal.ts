@@ -409,7 +409,7 @@ export class RenameNodeModal extends Modal {
       const tombstone = plan.tombstone;
       const file = app.vault.getAbstractFileByPath(vaultPathFor(this.pkg.dir, tombstone.path));
       if (file instanceof TFile) {
-        await app.fileManager.processFrontMatter(file, (fm) => {
+        await app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
           for (const key of Object.keys(fm)) {
             if (key !== 'id' && key !== 'type' && key !== 'name' && key !== 'scope') delete fm[key];
           }

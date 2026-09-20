@@ -59,7 +59,7 @@ export class VaireResolveModal extends SuggestModal<Candidate> {
   }
 
   onOpen(): void {
-    super.onOpen();
+    void super.onOpen();
     // Prefill with the descriptor and kick off suggestions for it immediately.
     this.inputEl.value = this.descriptor;
     this.inputEl.dispatchEvent(new Event('input', { bubbles: true }));

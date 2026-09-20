@@ -7,7 +7,7 @@ import { ItemView, MarkdownRenderer, Notice, WorkspaceLeaf, type ViewStateResult
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { VaireError } from '../cli';
-import { displayNameFrom, extractFrontmatterEdges, parseRef, type VaireRef } from '../ids';
+import { displayNameFrom, extractFrontmatterEdges, parseRef } from '../ids';
 import { createRefElement } from '../render/ref-el';
 import type { RenderResult, ResolveResult } from '../types';
 import type VairePlugin from '../main';
@@ -321,7 +321,7 @@ export class ExternalNodeView extends ItemView {
             continue;
           }
           const valueRow = valuesEl.createDiv();
-          valueRow.appendChild(createRefElement(this.plugin, value as VaireRef, { repo: state.repo }));
+          valueRow.appendChild(createRefElement(this.plugin, value, { repo: state.repo }));
         }
       }
     }

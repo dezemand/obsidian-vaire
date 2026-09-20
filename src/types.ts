@@ -167,7 +167,10 @@ export interface Sighting {
   name: string;
   version: string;
   state: 'live' | 'missing';
-  origin: 'registered' | 'scanned' | 'ambient' | string;
+  /** Usually one of `'registered' | 'scanned' | 'ambient'`, but the CLI's set of origins isn't
+   *  closed — `(string & {})` keeps those three autocompleting without collapsing the whole
+   *  union to plain `string`. */
+  origin: 'registered' | 'scanned' | 'ambient' | (string & {});
   last_seen: number;
 }
 

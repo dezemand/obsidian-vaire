@@ -435,8 +435,8 @@ export class PackageView extends ItemView {
       section.createDiv({ cls: 'vaire-empty', text: 'Run Check to see findings.' });
       return;
     }
-    this.renderFindingList(section, pkg, 'Violations', result.violations as unknown as FindingLike[]);
-    this.renderFindingList(section, pkg, 'Warnings', result.warnings as unknown as FindingLike[]);
+    this.renderFindingList(section, pkg, 'Violations', result.violations);
+    this.renderFindingList(section, pkg, 'Warnings', result.warnings);
   }
 
   private renderFindingList(root: HTMLElement, pkg: PackageInfo, title: string, findings: FindingLike[]): void {

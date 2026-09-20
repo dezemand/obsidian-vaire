@@ -57,7 +57,7 @@ export function registerPackageAndNodeViews(plugin: VairePlugin): void {
   registerSearchPanel(plugin);
 
   plugin.addCommand({
-    id: 'vaire-open-package-index',
+    id: 'open-package-index',
     name: 'Open package index',
     checkCallback: (checking) => {
       const pkg = activePackageOrFirst(plugin);
@@ -68,14 +68,14 @@ export function registerPackageAndNodeViews(plugin: VairePlugin): void {
   });
 
   plugin.addCommand({
-    id: 'vaire-open-node-panel',
+    id: 'open-node-panel',
     name: 'Open node panel',
     callback: () => void openNodePanel(plugin),
   });
 
   plugin.addCommand({
-    id: 'vaire-open-backlinks',
-    name: 'Open Vairë backlinks',
+    id: 'open-backlinks',
+    name: 'Open backlinks',
     callback: () => void openBacklinksView(plugin),
   });
 

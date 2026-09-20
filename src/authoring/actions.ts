@@ -23,7 +23,7 @@ export async function addAliasToNode(plugin: VairePlugin, node: LocalNode): Prom
   if (!trimmed) return;
 
   let changed = false;
-  await plugin.app.fileManager.processFrontMatter(node.file, (fm) => {
+  await plugin.app.fileManager.processFrontMatter(node.file, (fm: Record<string, unknown>) => {
     changed = addAlias(fm, trimmed).changed;
     if (changed && plugin.settings.bumpUpdatedOnEdit) fm.updated = todayIso();
   });
@@ -39,7 +39,7 @@ export function addEdgeToNode(plugin: VairePlugin, pkg: PackageInfo, node: Local
 
 async function applyEdge(plugin: VairePlugin, node: LocalNode, key: string, value: string): Promise<void> {
   let changed = false;
-  await plugin.app.fileManager.processFrontMatter(node.file, (fm) => {
+  await plugin.app.fileManager.processFrontMatter(node.file, (fm: Record<string, unknown>) => {
     changed = addEdge(fm, key, value).changed;
     if (changed && plugin.settings.bumpUpdatedOnEdit) fm.updated = todayIso();
   });

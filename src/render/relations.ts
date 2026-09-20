@@ -76,13 +76,9 @@ function insertFooter(plugin: VairePlugin, el: HTMLElement, pkg: PackageInfo, no
   // re-render) attached a footer already.
   parent.querySelectorAll(':scope > .vaire-relations').forEach((stale) => stale.remove());
 
-  const footer = document.createElement('div');
-  footer.className = 'vaire-relations';
-  footer.setAttribute('data-vaire-relations-for', file.path);
+  const footer = createDiv({ cls: 'vaire-relations', attr: { 'data-vaire-relations-for': file.path } });
 
-  const grid = document.createElement('div');
-  grid.className = 'vaire-rel-grid';
-  footer.appendChild(grid);
+  const grid = footer.createDiv({ cls: 'vaire-rel-grid' });
 
   const proseLinkTargets = (plugin.app.metadataCache.getFileCache(file)?.links ?? []).map((l) => l.link);
   const refs = outgoingRefs(node.frontmatter, proseLinkTargets);
@@ -115,30 +111,21 @@ function insertFooter(plugin: VairePlugin, el: HTMLElement, pkg: PackageInfo, no
 // ---- small DOM builders ------------------------------------------------------------------
 
 function sectionEl(cls: string, heading: string): HTMLElement {
-  const section = document.createElement('div');
-  section.className = `vaire-rel-section ${cls}`;
-  const h3 = document.createElement('h3');
-  h3.textContent = heading;
-  section.appendChild(h3);
+  const section = createDiv({ cls: `vaire-rel-section ${cls}` });
+  section.createEl('h3', { text: heading });
   return section;
 }
 
 function emptyRow(text: string): HTMLElement {
-  const div = document.createElement('div');
-  div.className = 'vaire-empty';
-  div.textContent = text;
-  return div;
+  return createDiv({ cls: 'vaire-empty', text });
 }
 
 function refList(): HTMLElement {
-  const div = document.createElement('div');
-  div.className = 'vaire-ref-list';
-  return div;
+  return createDiv({ cls: 'vaire-ref-list' });
 }
 
 function refRow(plugin: VairePlugin, repo: string, ref: VaireRef): HTMLElement {
-  const row = document.createElement('div');
-  row.className = 'vaire-ref-row';
+  const row = createDiv({ cls: 'vaire-ref-row' });
   row.appendChild(createRefElement(plugin, ref, { repo }));
   return row;
 }
@@ -166,8 +153,7 @@ function buildBacklinksSection(
   onCount: (count: number) => void,
 ): { el: HTMLElement; refresh: () => void } {
   const section = sectionEl('vaire-rel-backlinks', 'Backlinks ←');
-  const body = document.createElement('div');
-  section.appendChild(body);
+  const body = section.createDiv();
 
   const load = (): void => {
     body.textContent = '';
@@ -199,41 +185,28 @@ function buildBacklinksSection(
 }
 
 function buildBacklinkRow(plugin: VairePlugin, pkg: PackageInfo, entry: BacklinkEntry): HTMLElement {
-  const row = document.createElement('div');
-  row.className = 'vaire-ref-row vaire-backlink-row';
+  const row = createDiv({ cls: 'vaire-ref-row vaire-backlink-row' });
 
   const ref = parseRef(entry.id);
   if (ref && ref.kind === 'id') {
     row.appendChild(createRefElement(plugin, ref, { repo: pkg.absRoot }));
   } else {
-    const span = document.createElement('span');
-    span.textContent = entry.id;
-    row.appendChild(span);
+    row.createSpan({ text: entry.id });
   }
 
-  const meta = document.createElement('span');
-  meta.className = 'vaire-muted';
-  meta.textContent = `${entry.ref_type} · `;
-  row.appendChild(meta);
+  row.createSpan({ cls: 'vaire-muted', text: `${entry.ref_type} · ` });
 
   const target = resolveBacklinkFile(plugin, pkg, entry);
   if (target) {
-    const link = document.createElement('a');
-    link.className = 'vaire-path-link';
-    link.href = '#';
-    link.textContent = `line ${entry.line}`;
+    const link = row.createEl('a', { cls: 'vaire-path-link', href: '#', text: `line ${entry.line}` });
     link.addEventListener('click', (evt) => {
       evt.preventDefault();
       void openFileAtLine(plugin.app, target, entry.line - 1, evt.metaKey || evt.ctrlKey);
     });
-    row.appendChild(link);
   } else {
     // Not a file this vault can open (e.g. a dependency package that isn't itself in the
     // vault) — show the line number as plain text rather than a link that would go nowhere.
-    const span = document.createElement('span');
-    span.className = 'vaire-muted';
-    span.textContent = `line ${entry.line}`;
-    row.appendChild(span);
+    row.createSpan({ cls: 'vaire-muted', text: `line ${entry.line}` });
   }
 
   return row;
@@ -252,18 +225,13 @@ function errMessage(err: unknown): string {
 }
 
 function renderBacklinksError(plugin: VairePlugin, pkg: PackageInfo, body: HTMLElement, err: unknown): void {
-  const message = document.createElement('div');
-  message.className = 'vaire-error';
   if (err instanceof VaireError && err.kind === 'index_not_built') {
-    message.textContent = 'Index not built.';
-    body.appendChild(message);
-    const buttonHost = document.createElement('div');
-    body.appendChild(buttonHost);
+    body.createDiv({ cls: 'vaire-error', text: 'Index not built.' });
+    const buttonHost = body.createDiv();
     new ButtonComponent(buttonHost).setButtonText('Rebuild index').onClick(() => void plugin.rebuildIndex(pkg));
     return;
   }
-  message.textContent = `Could not load backlinks — ${errMessage(err)}`;
-  body.appendChild(message);
+  body.createDiv({ cls: 'vaire-error', text: `Could not load backlinks — ${errMessage(err)}` });
 }
 
 // ---- Supersedes ----------------------------------------------------------------------------

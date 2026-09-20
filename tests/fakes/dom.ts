@@ -1,9 +1,11 @@
 // Installs a minimal global `document`/`window` (via happy-dom) and the small set of DOM
 // convenience methods Obsidian's real runtime bolts onto `HTMLElement.prototype` /
 // `DocumentFragment.prototype` (`createEl`, `createDiv`, `createSpan`, `empty`, `addClass`,
-// `removeClass`, `toggleClass`, `setText`, `setAttr`, `hide`, `show`, `detach`) plus the ambient
-// global `createFragment`/`createDiv`/`createSpan`/`createEl` functions — see the doc comment at
-// the top of `src/health/index.ts` ("createFragment/createEl/createDiv/createSpan are ambient
+// `removeClass`, `toggleClass`, `setText`, `setAttr`, `hide`, `show`, `detach`) plus `Node.
+// prototype.instanceOf` (a same-window-only stand-in for Obsidian's cross-window-safe check —
+// good enough here since happy-dom never has more than one window) and the ambient global
+// `createFragment`/`createDiv`/`createSpan`/`createEl` functions — see the doc comment at the
+// top of `src/health/index.ts` ("createFragment/createEl/createDiv/createSpan are ambient
 // globals Obsidian installs ... not exports of the 'obsidian' module"). The real `obsidian`
 // npm package is types-only (no runtime), so none of this exists unless we build it ourselves.
 //
@@ -114,6 +116,11 @@ export function installDom(): void {
   proto.detach = function (this: HTMLElement): HTMLElement {
     this.remove();
     return this;
+  };
+
+  const nodeProto = globalThis.Node.prototype as unknown as Record<string, unknown>;
+  nodeProto.instanceOf = function (this: unknown, type: new (...args: never[]) => unknown): boolean {
+    return this instanceof type;
   };
 
   // `createFragment`'s callback gets a `DocumentFragment` that (per health/index.ts's usage)

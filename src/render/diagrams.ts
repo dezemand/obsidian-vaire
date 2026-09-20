@@ -18,6 +18,7 @@ import { diagramTargetFromHref } from './pure';
 import { resolveOriginScope, resolveRepo } from './reading';
 import { openRef } from '../navigate';
 import type VairePlugin from '../main';
+import { applyTypeColor } from '../theme/index';
 
 const MERMAID_SELECTOR = '.mermaid, div[class*="mermaid"]';
 const SVG_WAIT_TIMEOUT_MS = 10_000;
@@ -135,6 +136,7 @@ function processDiagramSvg(plugin: VairePlugin, svg: SVGElement, repo: string, o
     const ref = parseRef(target);
     if (ref && ref.kind === 'id') {
       a.classList.add('vaire-dref', `vaire-type-${ref.type}`);
+      applyTypeColor(plugin, a, ref.type);
       a.setAttribute('title', ref.full);
       bindDiagramClick(plugin, a, ref, repo, originScope);
     } else {

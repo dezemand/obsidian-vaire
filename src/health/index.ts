@@ -291,14 +291,14 @@ async function initPackage(plugin: VairePlugin): Promise<void> {
 
 export function registerHealth(plugin: VairePlugin): void {
   plugin.addCommand({
-    id: 'vaire-health-check',
+    id: 'health-check',
     name: 'Check package health',
     callback: () => void runHealthCheckNotices(plugin),
   });
 
   plugin.addCommand({
-    id: 'vaire-init-package',
-    name: 'Initialize a Vairë package here…',
+    id: 'init-package',
+    name: 'Initialize a package here…',
     callback: () => void initPackage(plugin),
   });
 

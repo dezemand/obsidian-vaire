@@ -185,7 +185,7 @@ export class SupersedeConfirmModal extends Modal {
     const oldFull = this.oldNode.full;
     const newFull = this.successor.id;
 
-    await this.plugin.app.fileManager.processFrontMatter(this.oldNode.file, (fm) => {
+    await this.plugin.app.fileManager.processFrontMatter(this.oldNode.file, (fm: Record<string, unknown>) => {
       fm.superseded_by = newFull;
       fm.updated = todayIso();
     });
@@ -194,8 +194,8 @@ export class SupersedeConfirmModal extends Modal {
     if (this.mergeAliasesOpt) {
       const successorNode = this.pkg.index.get(this.successor.id);
       if (successorNode) {
-        await this.plugin.app.fileManager.processFrontMatter(successorNode.file, (fm) => {
-          fm.aliases = mergeAliases(fm as Record<string, unknown>, {
+        await this.plugin.app.fileManager.processFrontMatter(successorNode.file, (fm: Record<string, unknown>) => {
+          fm.aliases = mergeAliases(fm, {
             name: this.oldNode.name,
             aliases: this.oldNode.aliases,
           });
