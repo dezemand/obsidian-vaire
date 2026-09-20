@@ -1,0 +1,209 @@
+/*
+ * Vairë for Obsidian — external read-only view + catalog/registry browser.
+ *
+ * `.vaire-node-header`, `.vaire-crumb`, `.vaire-aliases`/`.vaire-alias-chip`,
+ * `.vaire-superseded-banner`, `.vaire-edge-row`/`.vaire-edge-key`, `.vaire-panel` (incl. its
+ * table rules) and `.vaire-badge` are already styled in 00-base.css and reused as-is by the
+ * external view's header and the catalog/registry tables. Only what's specific to this pass
+ * lives here: `.vaire-ext-*`, `.vaire-catalog-*`, `.vaire-registry-*`, and a couple of extra
+ * class names (`.vaire-addr`, `.vaire-chip`, `.vaire-edges`) shared with the rest of the
+ * "reference" vocabulary that don't have a global home yet.
+ */
+
+/* ---- External read-only view --------------------------------------------------------- */
+
+.vaire-ext-view {
+  padding: 1em 1.5em 2em;
+  max-width: 52em;
+}
+
+.vaire-ext-toolbar {
+  margin-bottom: 0.75em;
+}
+
+.vaire-ext-back {
+  font-size: 0.9em;
+}
+
+.vaire-ext-banner {
+  padding: 0.5em 0.9em;
+  margin-bottom: 1em;
+  background: var(--background-secondary);
+  border-left: 3px solid var(--text-warning);
+  border-radius: var(--radius-s, 4px);
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.vaire-ext-header {
+  margin-bottom: 1.25em;
+}
+
+.vaire-addr,
+.vaire-ext-addr {
+  cursor: pointer;
+  background: var(--background-primary-alt, var(--background-secondary));
+  padding: 0.1em 0.4em;
+  border-radius: var(--radius-s, 4px);
+}
+
+.vaire-addr:hover,
+.vaire-ext-addr:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-ext-name {
+  font-size: 1.15em;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.vaire-chip {
+  /* Falls back cleanly even where `.vaire-alias-chip` (base) isn't also present. */
+  padding: 0.1em 0.5em;
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+  font-size: 0.85em;
+}
+
+.vaire-edges,
+.vaire-ext-edges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.vaire-ext-edges .vaire-edge-values {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+.vaire-ext-body {
+  line-height: 1.55;
+}
+
+.vaire-ext-index-not-built button {
+  margin-top: 0.5em;
+}
+
+/* ---- Generic error box (used by the external view and both browsers) ------------------ */
+
+.vaire-error {
+  padding: 0.6em 0.9em;
+  border-radius: var(--radius-s, 4px);
+  background: var(--background-modifier-error, var(--background-modifier-border));
+  color: var(--text-error);
+}
+
+.vaire-empty,
+.vaire-muted {
+  color: var(--text-muted);
+}
+
+/* ---- Catalog + registry browser (CatalogView) ------------------------------------------ */
+
+.vaire-catalog-view h3 {
+  margin-bottom: 0.25em;
+}
+
+.vaire-section-actions {
+  display: flex;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.vaire-row-actions {
+  display: flex;
+  gap: 0.4em;
+  white-space: nowrap;
+}
+
+.vaire-mono {
+  font-family: var(--font-monospace);
+  font-size: 0.9em;
+}
+
+.vaire-state-live {
+  color: var(--vaire-dot-ok);
+}
+
+.vaire-state-missing {
+  color: var(--vaire-dot-off);
+}
+
+.vaire-registry-detail-row td {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding: 0.5em 0.5em 0.75em;
+}
+
+.vaire-registry-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+
+.vaire-registry-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.vaire-registry-row {
+  display: flex;
+  gap: 0.6em;
+}
+
+.vaire-registry-row-key {
+  color: var(--text-muted);
+  min-width: 10em;
+}
+
+.vaire-registry-raw {
+  max-height: 20em;
+  overflow: auto;
+  background: var(--background-secondary);
+  padding: 0.6em;
+  border-radius: var(--radius-s, 4px);
+  font-size: 0.85em;
+}
+
+/* ---- PackageBrowserModal ---------------------------------------------------------------- */
+
+.vaire-package-browser {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.vaire-type-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+
+.vaire-package-browser-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+  max-height: 20em;
+  overflow: auto;
+}
+
+.vaire-package-browser-hit {
+  padding: 0.4em 0.5em;
+  border-radius: var(--radius-s, 4px);
+  cursor: pointer;
+}
+
+.vaire-package-browser-hit:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-hit-name {
+  font-family: var(--font-monospace);
+}
+
+.vaire-hit-snippet {
+  font-size: 0.85em;
+}

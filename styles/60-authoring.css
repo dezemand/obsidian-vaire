@@ -1,0 +1,43 @@
+/*
+ * Vairë for Obsidian — authoring pass.
+ *
+ * Styles for the "New Vairë node" modal (src/authoring/new-node-modal.ts). Obsidian CSS
+ * variables only, no global element selectors. The synthetic "Create new node…" item inside
+ * VaireResolveModal's suggestion list is styled in 30-suggest.css instead, since it's part of
+ * that modal's own list.
+ */
+
+.vaire-new-node-modal .vaire-new-node-wide {
+  width: 100%;
+}
+
+.vaire-new-node-error {
+  min-height: 1.2em;
+  margin: -0.4em 0 0.6em;
+  color: var(--text-error);
+  font-size: 0.85em;
+}
+
+.vaire-new-node-modal .vaire-hidden {
+  display: none;
+}
+
+/*
+ * feat/record-templates: "New Vairë node from template…" modal (src/templates/template-modal.ts).
+ * Reuses .vaire-new-node-wide/.vaire-new-node-error/.vaire-hidden from the New-node modal above.
+ */
+
+.vaire-template-modal .vaire-template-loading,
+.vaire-template-modal .vaire-template-empty {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  padding: 0.5em 0;
+}
+
+.vaire-template-modal .vaire-template-fields h4 {
+  margin: 0.8em 0 0.2em;
+  color: var(--text-muted);
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}

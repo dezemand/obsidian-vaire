@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": 1,
+    "kind": "registry",
+    "message": "registry error: knowledge.lock records acme-security, acme-org, acme-vision, acme-ppl, atlas-general, atlas-services as resolved from a working copy, which has no artifact to reproduce — those answers cannot be obtained again, so `--locked` cannot honestly claim to have reproduced this resolution"
+  }
+}

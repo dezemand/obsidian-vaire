@@ -1,0 +1,8 @@
+{
+  "store": "/home/dev/.vaire/store",
+  "pulled": [],
+  "already": ["acme-security 1.2.0"],
+  "failed": [],
+  "dry_run": true,
+  "warnings": []
+}

@@ -1,0 +1,36 @@
+# knowledge.lock — written by `vaire pull` and by indexing. Do not edit by hand.
+#
+# An entry with a sha256 came from a registry and can be reproduced exactly.
+# An entry without one came from a working copy, which has no artifact to
+# checksum — see `--frozen` if you need every answer to be reproducible.
+lockfile_version = 1
+
+[[package]]
+name = "acme-security"
+version = "1.2.0"
+source = "workspace"
+
+[[package]]
+name = "acme-org"
+version = "1.0.0"
+source = "workspace"
+
+[[package]]
+name = "acme-vision"
+version = "1.0.0"
+source = "workspace"
+
+[[package]]
+name = "acme-ppl"
+version = "1.5.0"
+source = "workspace"
+
+[[package]]
+name = "atlas-general"
+version = "1.0.0"
+source = "workspace"
+
+[[package]]
+name = "atlas-services"
+version = "1.0.0"
+source = "workspace"

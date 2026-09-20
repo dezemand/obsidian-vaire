@@ -1,0 +1,93 @@
+/*
+ * Vairë for Obsidian — suggestions pass.
+ *
+ * Styles for the `[[` autocomplete popover (link-suggest.ts), the search modal
+ * (search-modal.ts), the loose-end resolve modal (resolve-modal.ts), and the quick switcher
+ * (quick-switch-modal.ts). Obsidian CSS variables only, no global element selectors — see
+ * styles/00-base.css for the shared variable defaults this pass reuses (e.g.
+ * `--vaire-badge-size`, and `.vaire-gone` from styles/40-views.css for superseded nodes).
+ */
+
+.vaire-suggest-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.vaire-suggest-name {
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.vaire-suggest-id {
+  font-family: var(--font-monospace);
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+/* Used in the search modal, where the id (not a name) is the primary label. */
+.vaire-suggest-id.vaire-suggest-primary {
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.vaire-suggest-type {
+  font-size: var(--vaire-badge-size);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.vaire-suggest-pkg {
+  font-size: var(--vaire-badge-size);
+  padding: 0.05em 0.4em;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.vaire-suggest-snippet {
+  flex-basis: 100%;
+  color: var(--text-muted);
+  font-size: 0.85em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The synthetic "Create new node…" item VaireResolveModal always shows first — see
+   src/authoring/new-node-modal.ts and DESIGN.md-style notes in src/suggest/resolve-modal.ts. */
+.vaire-suggest-create .vaire-suggest-name {
+  color: var(--text-accent);
+  font-weight: 600;
+}
+
+.vaire-suggest-create-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
+  border-radius: 50%;
+  background: var(--text-accent);
+  color: var(--text-on-accent);
+  font-size: 0.8em;
+  line-height: 1;
+}
+
+/* ---- Quick switcher (quick-switch-modal.ts) -------------------------------------------- */
+
+/* Fuzzy-match highlight spans rendered by Obsidian's `renderMatches` inside `.vaire-suggest-name`. */
+.vaire-suggest-item .suggestion-highlight {
+  color: var(--text-accent);
+}
+
+.vaire-suggest-aliases {
+  flex-basis: 100%;
+  color: var(--text-muted);
+  font-size: 0.85em;
+  font-style: italic;
+}

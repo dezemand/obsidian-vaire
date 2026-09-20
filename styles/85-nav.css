@@ -1,0 +1,82 @@
+/*
+ * Vairë — navigation pass styles (feat/tab-titles).
+ *
+ * `.vaire-title-original` / `.vaire-title-wrap` / `.vaire-title-badge` / `.vaire-title-text`:
+ * tab header + view title decoration (src/nav/titles.ts). `.vaire-breadcrumbs` and its
+ * children: scope breadcrumb trail (src/nav/breadcrumbs.ts), shared between the 'header'
+ * placement (inside `div.vaire-node-header`, styled via 00-base.css's `.vaire-node-header`
+ * ancestor) and the 'view' placement (`.vaire-view-breadcrumbs`, appended into the view
+ * header bar). `.vaire-badge`, `.vaire-link`, `.vaire-link-missing` are 00-base.css's — reused
+ * here rather than duplicated.
+ */
+
+/* ---- Tab header / view title decoration (titles.ts) ------------------------------------- */
+
+.vaire-title-original {
+  display: none;
+}
+
+.vaire-title-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vaire-title-badge {
+  flex: none;
+}
+
+.vaire-title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Scope breadcrumbs (breadcrumbs.ts) -------------------------------------------------- */
+
+.vaire-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3em;
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
+
+.vaire-node-header .vaire-breadcrumbs {
+  margin-bottom: 0.3em;
+}
+
+.vaire-breadcrumb-sep {
+  opacity: 0.6;
+}
+
+.vaire-breadcrumb-pkg {
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.vaire-breadcrumb-pkg:hover {
+  color: var(--text-normal);
+  text-decoration: underline;
+}
+
+.vaire-breadcrumb-current {
+  color: var(--text-normal);
+  font-weight: var(--font-medium, 500);
+}
+
+.vaire-breadcrumb-missing {
+  cursor: help;
+}
+
+/* View-header placement: fits inline next to the title, shrinking rather than wrapping the
+ * whole header bar onto a second line where space is tight. */
+.vaire-view-breadcrumbs {
+  min-width: 0;
+  flex: 0 1 auto;
+  margin-left: 0.6em;
+}

@@ -1,0 +1,268 @@
+/*
+ * Vairë for Obsidian — dependency graph view (src/depgraph/).
+ *
+ * Obsidian CSS variables only, no global element selectors. `.vaire-state-badge` and its
+ * `ok`/`unlinked`/`mismatch`/`error` color variants come from 40-views.css; this file only
+ * adds the `cycle` variant plus everything specific to this view's own chrome (toolbar, the
+ * indented outline, the canvas + side panel split, the tooltip). The canvas node fills are
+ * computed from CSS variables in dep-view.ts, mirroring 70-graph.css's approach.
+ */
+
+.vaire-state-cycle {
+  background: color-mix(in srgb, var(--color-purple, #9b6bce) 18%, transparent);
+  color: var(--color-purple, #9b6bce);
+}
+
+.vaire-depgraph-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+/* ---- Toolbar ------------------------------------------------------------------------------ */
+
+.vaire-depgraph-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.5em 0.75em;
+  border-bottom: 1px solid var(--background-modifier-border);
+  flex-wrap: wrap;
+}
+
+.vaire-depgraph-layout-label {
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
+
+.vaire-depgraph-layout-select {
+  font-size: 0.85em;
+}
+
+.vaire-depgraph-refresh {
+  font-size: 0.85em;
+  padding: 0.25em 0.7em;
+  border-radius: var(--radius-s, 4px);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  cursor: pointer;
+}
+
+.vaire-depgraph-refresh:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-depgraph-status {
+  margin-left: auto;
+  font-size: 0.8em;
+  color: var(--text-muted);
+}
+
+/* ---- Body: main (tree/canvas) + side panel ------------------------------------------------- */
+
+.vaire-depgraph-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.vaire-depgraph-main {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  position: relative;
+}
+
+.vaire-depgraph-side {
+  width: 20em;
+  flex-shrink: 0;
+  padding: 0.75em;
+  border-left: 1px solid var(--background-modifier-border);
+  overflow-y: auto;
+}
+
+/* ---- Tree layout ---------------------------------------------------------------------------- */
+
+.vaire-depgraph-outline {
+  padding: 0.5em;
+}
+
+.vaire-depgraph-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.2em 0.4em;
+  padding-left: calc(var(--vaire-depgraph-indent, 0) * 1.4em + 0.4em);
+  border-radius: var(--radius-s, 4px);
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.vaire-depgraph-row:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-depgraph-row.is-selected {
+  background: color-mix(in srgb, var(--interactive-accent) 15%, transparent);
+}
+
+.vaire-depgraph-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.vaire-depgraph-chevron.is-empty {
+  visibility: hidden;
+}
+
+.vaire-depgraph-name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.vaire-depgraph-constraint,
+.vaire-depgraph-version {
+  font-family: var(--font-monospace);
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
+
+.vaire-depgraph-resolved-from {
+  margin-left: auto;
+  font-size: 0.8em;
+  color: var(--text-faint);
+}
+
+.vaire-depgraph-see-above {
+  font-size: 0.8em;
+  font-style: italic;
+  color: var(--text-accent, var(--interactive-accent));
+}
+
+/* ---- Graph layout (canvas) ------------------------------------------------------------------ */
+
+.vaire-depgraph-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 20em;
+  overflow: hidden;
+  background: var(--background-primary);
+}
+
+.vaire-depgraph-canvas {
+  display: block;
+  cursor: grab;
+}
+
+.vaire-depgraph-canvas:active {
+  cursor: grabbing;
+}
+
+.vaire-depgraph-tooltip {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  padding: 0.25em 0.5em;
+  font-size: 0.8em;
+  color: var(--text-normal);
+  white-space: nowrap;
+  box-shadow: var(--shadow-s, 0 1px 3px rgba(0, 0, 0, 0.2));
+}
+
+/* ---- Side panel ------------------------------------------------------------------------------ */
+
+.vaire-depgraph-conflicts {
+  margin-bottom: 1em;
+  padding: 0.5em;
+  border: 1px solid var(--text-warning);
+  border-radius: var(--radius-s, 4px);
+  background: color-mix(in srgb, var(--text-warning) 10%, transparent);
+}
+
+.vaire-depgraph-conflicts h3 {
+  margin: 0 0 0.3em;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  color: var(--text-warning);
+}
+
+.vaire-depgraph-conflict-row {
+  font-size: 0.85em;
+  cursor: pointer;
+  padding: 0.1em 0;
+}
+
+.vaire-depgraph-conflict-row:hover {
+  text-decoration: underline;
+}
+
+.vaire-depgraph-detail h3 {
+  margin: 0 0 0.3em;
+  overflow-wrap: anywhere;
+}
+
+.vaire-depgraph-detail-rows {
+  margin: 0.6em 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.vaire-depgraph-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5em;
+  font-size: 0.85em;
+}
+
+.vaire-depgraph-detail-label {
+  color: var(--text-muted);
+}
+
+.vaire-depgraph-detail-value {
+  text-align: right;
+  overflow-wrap: anywhere;
+  font-family: var(--font-monospace);
+}
+
+.vaire-depgraph-conflict-warning {
+  font-size: 0.8em;
+  color: var(--text-warning);
+}
+
+.vaire-depgraph-parents h4,
+.vaire-depgraph-notes h4 {
+  margin: 0.8em 0 0.3em;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.vaire-depgraph-parent-row {
+  font-size: 0.85em;
+  padding: 0.1em 0;
+}
+
+.vaire-depgraph-actions {
+  margin-top: 1em;
+  flex-wrap: wrap;
+}
+
+.vaire-depgraph-transitive-hint {
+  margin-top: 0.8em;
+  font-size: 0.8em;
+  color: var(--text-muted);
+}

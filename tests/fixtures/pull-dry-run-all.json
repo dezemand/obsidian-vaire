@@ -1,0 +1,8 @@
+{
+  "store": "/home/dev/.vaire/store",
+  "pulled": [],
+  "already": [],
+  "failed": [{ "package": "acme-org", "reason": "registry error: no registry serves acme-org ^1 — looked in acme" }],
+  "dry_run": true,
+  "warnings": []
+}

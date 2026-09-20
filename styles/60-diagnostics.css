@@ -1,0 +1,95 @@
+/*
+ * Vairë for Obsidian — inline `vaire check` diagnostics (src/diagnostics/).
+ *
+ * Obsidian CSS variables only. @codemirror/lint ships its own `.cm-lintRange-*` /
+ * `.cm-tooltip-lint` styles, but they're hardcoded colors (baked into SVG data URIs / plain
+ * hex) that don't track the active Obsidian theme, so we replace the squiggle with a themed
+ * wavy underline and re-skin the tooltip and gutter with Obsidian's own variables. Gutter
+ * marker glyphs are left at their CM6 default (small enough not to clash with any theme).
+ */
+
+/* ---- Underline (editor content) --------------------------------------------------------- */
+
+.cm-lintRange-error,
+.cm-lintRange-warning {
+  background-image: none;
+  text-decoration-skip-ink: none;
+}
+
+.cm-lintRange-error {
+  text-decoration: underline wavy var(--text-error);
+}
+
+.cm-lintRange-warning {
+  text-decoration: underline wavy var(--text-warning);
+}
+
+/* ---- Gutter ------------------------------------------------------------------------------ */
+
+.cm-gutter-lint {
+  width: 1.1em;
+}
+
+/* ---- Hover tooltip ------------------------------------------------------------------------ */
+
+.cm-tooltip.cm-tooltip-lint {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  color: var(--text-normal);
+  box-shadow: var(--shadow-s, none);
+}
+
+.cm-tooltip-lint .cm-diagnostic {
+  padding: 0.3em 0.6em;
+  border-left: 3px solid var(--background-modifier-border);
+}
+
+.cm-tooltip-lint .cm-diagnostic-error {
+  border-left-color: var(--text-error);
+}
+
+.cm-tooltip-lint .cm-diagnostic-warning {
+  border-left-color: var(--text-warning);
+}
+
+.cm-tooltip-lint .cm-diagnosticSource {
+  color: var(--text-muted);
+}
+
+.cm-tooltip-lint .cm-diagnosticAction {
+  background: var(--interactive-normal);
+  color: var(--text-normal);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  padding: 0.1em 0.5em;
+  margin-left: 0.5em;
+  cursor: pointer;
+}
+
+.cm-tooltip-lint .cm-diagnosticAction:hover {
+  background: var(--interactive-hover);
+}
+
+/* ---- Status bar item ----------------------------------------------------------------------- */
+
+.vaire-status-bar-check {
+  cursor: pointer;
+  font-family: var(--font-monospace);
+}
+
+.vaire-status-bar-check.is-hidden {
+  display: none;
+}
+
+.vaire-status-bar-check.vaire-status-error {
+  color: var(--text-error);
+}
+
+.vaire-status-bar-check.vaire-status-warn {
+  color: var(--vaire-dot-warn, var(--text-warning));
+}
+
+.vaire-status-bar-check.vaire-status-ok {
+  color: var(--vaire-dot-ok);
+}

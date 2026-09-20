@@ -1,0 +1,589 @@
+/*
+ * Vairë — rendering pass styles.
+ *
+ * Refines 00-base.css (loaded first; never edited here) rather than duplicating it: most
+ * states (`.vaire-link`, `.vaire-link-external`, `.vaire-link-unlinked`, `.vaire-link-missing`,
+ * `.vaire-loose-end`, `.vaire-status-dot`, `.vaire-node-header` and its `.vaire-crumb` /
+ * `.vaire-aliases` / `.vaire-alias-chip` / `.vaire-superseded-banner` / `.vaire-edge-row` /
+ * `.vaire-edge-key`) already have sensible defaults there. This file only adds classes
+ * 00-base.css doesn't know about (`.vaire-link-pending`, `.vaire-addr`, `.vaire-scope`,
+ * `.vaire-crumb-status`/`.vaire-crumb-meta`, `.vaire-edges`/`.vaire-edge-values`, the
+ * unlinked-state `.vaire-pkg-pill`) and overrides a handful of properties (the edge-row
+ * layout, live-preview coloring) where the base default needed a second pass.
+ */
+
+/* ---- Reference states not covered by 00-base.css --------------------------------------- */
+
+.vaire-link-pending {
+  opacity: 0.55;
+  text-decoration: none;
+  cursor: progress;
+}
+
+.vaire-link-missing,
+.vaire-link-unlinked {
+  cursor: help;
+}
+
+.vaire-link-unlinked .vaire-pkg-pill {
+  margin-right: 0.35em;
+  padding: 0 0.4em;
+  font-size: var(--vaire-badge-size);
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+}
+
+.vaire-loose-end {
+  padding: 0 0.15em;
+  border-radius: 3px;
+  cursor: help;
+}
+
+/* ---- Live preview: only show the inline name hint when one is actually known ----------- */
+
+.vaire-lp-link:not([data-vaire-name])::after,
+.vaire-lp-link[data-vaire-name='']::after {
+  content: none;
+}
+
+.vaire-lp-loose {
+  color: var(--vaire-dot-warn);
+  font-style: italic;
+  text-decoration: underline dotted;
+}
+
+/* ---- Node header: address, scope line, crumb meta, edge grid --------------------------- */
+
+.vaire-node-header .vaire-addr {
+  font-family: var(--font-monospace);
+  font-size: 0.9em;
+  width: fit-content;
+  padding: 0.1em 0.4em;
+  border-radius: var(--radius-s, 4px);
+  background: var(--background-primary);
+  cursor: pointer;
+}
+
+.vaire-node-header .vaire-addr:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-node-header .vaire-scope {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.vaire-node-header .vaire-crumb-status,
+.vaire-node-header .vaire-crumb-meta {
+  font-size: 0.85em;
+  color: var(--text-faint);
+}
+
+.vaire-node-header .vaire-edges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  margin-top: 0.2em;
+}
+
+/* Overrides 00-base.css's flex row with the two-column grid DESIGN.md asks for. */
+
+.vaire-node-header .vaire-edge-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 0.5em;
+}
+
+.vaire-node-header .vaire-edge-values {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+/* ---- Properties panel decoration (properties.ts) ---------------------------------------- *
+ * `.vaire-prop-has-link` is added to `.metadata-property-value` once its raw value has a
+ * `.vaire-prop-link` overlay; while the property isn't focused (i.e. not being edited), the
+ * raw editable text is hidden and the resolved link shows in its place. Click into the
+ * property (or its multi-select area) to get the raw text back for editing. */
+
+.metadata-property-value.vaire-prop-has-link:not(:focus-within) .metadata-input-longtext {
+  display: none;
+}
+
+.metadata-property-value.vaire-prop-has-link:not(:focus-within) .vaire-prop-raw-text {
+  display: none;
+}
+
+.vaire-prop-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Keep pill height stable whether the raw text or the resolved link is showing — scoped to
+ * pills we actually decorated (`vaire-prop-decorated`, set by properties.ts), never a bare
+ * `.multi-select-pill-content` selector, so ordinary (non-Vairë) multi-select properties are
+ * untouched. */
+
+.multi-select-pill-content.vaire-prop-decorated {
+  display: inline-flex;
+  align-items: center;
+}
+
+.multi-select-pill-content .vaire-prop-link {
+  line-height: inherit;
+}
+
+/*
+ * Vairë — rendering pass styles.
+ *
+ * Refines 00-base.css (loaded first; never edited here) rather than duplicating it: most
+ * states (`.vaire-link`, `.vaire-link-external`, `.vaire-link-unlinked`, `.vaire-link-missing`,
+ * `.vaire-loose-end`, `.vaire-status-dot`, `.vaire-node-header` and its `.vaire-crumb` /
+ * `.vaire-aliases` / `.vaire-alias-chip` / `.vaire-superseded-banner` / `.vaire-edge-row` /
+ * `.vaire-edge-key`) already have sensible defaults there. This file only adds classes
+ * 00-base.css doesn't know about (`.vaire-link-pending`, `.vaire-addr`, `.vaire-scope`,
+ * `.vaire-crumb-status`/`.vaire-crumb-meta`, `.vaire-edges`/`.vaire-edge-values`, the
+ * unlinked-state `.vaire-pkg-pill`) and overrides a handful of properties (the edge-row
+ * layout, live-preview coloring) where the base default needed a second pass. It also owns
+ * the reading-mode relations footer (`.vaire-relations`, `.vaire-rel-grid`) — `.vaire-empty`
+ * / `.vaire-muted` / `.vaire-path-link` / `.vaire-error` inside it reuse the plain rules from
+ * 40-views.css (CSS classes are global once styles.css is concatenated; see esbuild.config.mjs).
+ */
+
+/* ---- Relations footer (reading mode) ---------------------------------------------------- */
+
+.vaire-relations {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid var(--background-modifier-border);
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.vaire-relations .vaire-rel-section h3 {
+  margin: 0 0 0.4em;
+  padding: 0.3em 0.6em;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  background: var(--background-secondary);
+  border-radius: var(--radius-s, 4px);
+}
+
+.vaire-relations .vaire-ref-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.vaire-relations .vaire-ref-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+}
+
+.vaire-relations .vaire-backlink-row .vaire-muted {
+  white-space: nowrap;
+}
+
+/* Side by side by default; once References or Backlinks passes the wide threshold (see
+ * RELATIONS_WIDE_THRESHOLD in relations-data.ts), stack full-width and let each list itself
+ * flow into two CSS columns instead of one long column. */
+
+.vaire-rel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5em;
+}
+
+.vaire-rel-grid.wide {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.vaire-rel-grid.wide .vaire-ref-list {
+  column-count: 2;
+  column-gap: 1.5em;
+}
+
+.vaire-rel-grid.wide .vaire-ref-row {
+  break-inside: avoid;
+}
+
+.vaire-relations .vaire-rel-supersedes .vaire-ref-list,
+.vaire-relations .vaire-rel-loose-ends .vaire-ref-list {
+  column-count: 2;
+  column-gap: 1.5em;
+}
+
+.vaire-relations .vaire-rel-supersedes .vaire-ref-row,
+.vaire-relations .vaire-rel-loose-ends .vaire-ref-row {
+  break-inside: avoid;
+}
+
+/*
+ * feat/ext-render-mode: a `vaire://<absolute-path>` link inside a `render`-mode external page
+ * (views/pure-ext.ts's `rewriteRenderedLinks`). Styled like a plain internal link — deliberately
+ * not `.vaire-link` (no `data-vaire-type` is known for these; that badge would render empty).
+ */
+
+.vaire-ext-render-link {
+  color: var(--link-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.vaire-ext-render-link:hover {
+  text-decoration: underline;
+}
+
+/* ---- Diagram shape links (diagrams.ts): `vaire/…` anchors inside a rendered Mermaid <svg> - */
+
+.vaire-dref {
+  cursor: pointer;
+}
+
+.vaire-dref:hover,
+.vaire-dref:hover * {
+  fill: var(--interactive-accent);
+}
+
+.vaire-dref-off {
+  cursor: help;
+  opacity: 0.6;
+}
+
+/*
+ * Vairë — rendering pass styles.
+ *
+ * Refines 00-base.css (loaded first; never edited here) rather than duplicating it: most
+ * states (`.vaire-link`, `.vaire-link-external`, `.vaire-link-unlinked`, `.vaire-link-missing`,
+ * `.vaire-loose-end`, `.vaire-status-dot`, `.vaire-node-header` and its `.vaire-crumb` /
+ * `.vaire-aliases` / `.vaire-alias-chip` / `.vaire-superseded-banner` / `.vaire-edge-row` /
+ * `.vaire-edge-key`) already have sensible defaults there. This file only adds classes
+ * 00-base.css doesn't know about (`.vaire-link-pending`, `.vaire-addr`, `.vaire-scope`,
+ * `.vaire-crumb-status`/`.vaire-crumb-meta`, `.vaire-edges`/`.vaire-edge-values`, the
+ * unlinked-state `.vaire-pkg-pill`) and overrides a handful of properties (the edge-row
+ * layout, live-preview coloring) where the base default needed a second pass. It also owns
+ * the `.vaire-popover` hover-preview card (hover-preview.ts) end to end, since 00-base.css
+ * predates that feature.
+ */
+
+/* ---- Hover-preview popover (hover-preview.ts) ------------------------------------------- */
+
+.vaire-popover {
+  position: fixed;
+  z-index: var(--layer-popover, 70);
+  max-width: 360px;
+  padding: 0.65em 0.8em;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 6px);
+  box-shadow: var(--shadow-s, 0 2px 8px rgba(0, 0, 0, 0.15));
+  font-size: 0.9em;
+  line-height: 1.4;
+  color: var(--text-normal);
+  pointer-events: auto;
+}
+
+.vaire-popover-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.3em;
+}
+
+.vaire-popover-badge {
+  display: inline-block;
+  padding: 0.1em 0.5em;
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.vaire-popover-badge-loose {
+  color: var(--vaire-dot-warn);
+}
+
+.vaire-popover-addr {
+  font-family: var(--font-monospace);
+  font-size: 0.85em;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.vaire-popover-title {
+  color: var(--vaire-dot-warn);
+  font-style: italic;
+}
+
+.vaire-popover-name {
+  font-weight: 600;
+  margin-bottom: 0.2em;
+}
+
+.vaire-popover-aliases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  margin-bottom: 0.3em;
+}
+
+.vaire-popover-aliases .vaire-alias-chip {
+  padding: 0.05em 0.45em;
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+  font-size: 0.8em;
+}
+
+.vaire-popover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6em;
+  color: var(--text-muted);
+  font-size: 0.85em;
+  margin-bottom: 0.3em;
+}
+
+.vaire-popover-edges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  max-height: 8em;
+  overflow-y: auto;
+  margin-bottom: 0.3em;
+  padding-top: 0.3em;
+  border-top: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+.vaire-popover-para,
+.vaire-popover-body {
+  color: var(--text-normal);
+}
+
+.vaire-popover-loading,
+.vaire-popover-empty {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+/* ---- Live preview "B" variant: inline-replace widget (feat/lp-inline-names) ------------ */
+
+/*
+ * The widget itself already carries `.vaire-link.vaire-type-<t>` (id refs) or
+ * `.vaire-loose-end` (loose ends), so the link color, hover underline, type-prefix badge
+ * (`::before { content: attr(data-vaire-type) }`) and the loose-end "? TYPE" treatment are
+ * all inherited from 00-base.css/20-render.css above — `.vaire-lp-inline` only needs to make
+ * that content sit correctly inline inside the CM6 editor.
+ */
+
+.vaire-lp-inline {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* `.vaire-lp-inline.vaire-loose-end` needs nothing further: base.css's `.vaire-loose-end`
+   (gold, italic, dotted underline, "? TYPE" prefix) and the `cursor: pointer` above already
+   cover it. */
+
+/* ---- Node embeds (embeds.ts) ------------------------------------------------------------- *
+ * Bordered like Obsidian's own `.markdown-embed`: a `--background-secondary` panel with a
+ * left accent border, a title bar (the reused `.vaire-link` element gets its usual type badge
+ * / external pill / missing styling for free from the rules above), and the transcluded body.
+ * Nested embeds (an embed inside an embedded node's body, up to `MAX_EMBED_DEPTH`) get a small
+ * indent per level via the plain descendant-combinator rule below, so depth stays legible
+ * without needing to read `data-vaire-embed-depth` in CSS. */
+
+.vaire-embed {
+  display: block;
+  margin: 0.75em 0;
+  padding: 0.6em 0.9em 0.75em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-left: 3px solid var(--embed-border-left, var(--interactive-accent));
+  border-radius: var(--radius-m, 6px);
+}
+
+.vaire-embed.is-unresolved {
+  /* We've taken this over and render our own "not found" box inside `.vaire-embed-missing`
+   * when the target doesn't resolve — don't let Obsidian's own unresolved-embed styling
+   * (if any survives on this class) show through as well. */
+  color: inherit;
+}
+
+.vaire-embed .vaire-embed {
+  margin-left: 1.25em;
+}
+
+.vaire-embed-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+.vaire-embed-title .vaire-link {
+  font-weight: 600;
+}
+
+.vaire-embed-heading {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 0.9em;
+}
+
+.vaire-embed-body {
+  font-weight: normal;
+}
+
+/* The body's own leading/trailing margins tend to look cramped inside the embed padding. */
+
+.vaire-embed-body > :first-child {
+  margin-top: 0;
+}
+
+.vaire-embed-body > :last-child {
+  margin-bottom: 0;
+}
+
+.vaire-embed-note {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.vaire-embed-missing {
+  color: var(--text-error);
+  font-size: 0.9em;
+}
+
+.vaire-embed-missing code {
+  color: inherit;
+}
+
+/*
+ * Vairë — rendering pass styles.
+ *
+ * Refines 00-base.css (loaded first; never edited here) rather than duplicating it: most
+ * states (`.vaire-link`, `.vaire-link-external`, `.vaire-link-unlinked`, `.vaire-link-missing`,
+ * `.vaire-loose-end`, `.vaire-status-dot`, `.vaire-node-header` and its `.vaire-crumb` /
+ * `.vaire-aliases` / `.vaire-alias-chip` / `.vaire-superseded-banner` / `.vaire-edge-row` /
+ * `.vaire-edge-key`) already have sensible defaults there. This file only adds classes
+ * 00-base.css doesn't know about (`.vaire-link-pending`, `.vaire-addr`, `.vaire-scope`,
+ * `.vaire-crumb-status`/`.vaire-crumb-meta`, `.vaire-edges`/`.vaire-edge-values`, the
+ * unlinked-state `.vaire-pkg-pill`) and overrides a handful of properties (the edge-row
+ * layout, live-preview coloring) where the base default needed a second pass. It also owns
+ * the reading-mode relations footer (`.vaire-relations`, `.vaire-rel-grid`) — `.vaire-empty`
+ * / `.vaire-muted` / `.vaire-path-link` / `.vaire-error` inside it reuse the plain rules from
+ * 40-views.css (CSS classes are global once styles.css is concatenated; see esbuild.config.mjs)
+ * — and the `.vaire-popover` hover-preview card (hover-preview.ts) end to end, since
+ * 00-base.css predates that feature.
+ */
+
+/* ---- File explorer decoration (explorer.ts) --------------------------------------------- *
+ * `.vaire-nav-badge` is the tiny uppercase muted pill shared by the per-node type badge
+ * (`.vaire-type-<t>`) and the package-root `pkg` badge (`.vaire-nav-pkg-badge`, folder rows).
+ * `.vaire-nav-name` is always present once a row is decorated (see explorer.ts) but only
+ * shown — in place of the original `.nav-file-title-content` — while `explorerNames: 'node'`
+ * is active (`.vaire-nav-names-node`, toggled on the row). */
+
+.vaire-nav-badge {
+  display: inline-block;
+  margin-left: 0.4em;
+  padding: 0 0.3em;
+  font-size: 0.65em;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  opacity: 0.7;
+  border-radius: 3px;
+  background: var(--background-modifier-border);
+}
+
+.vaire-nav-pkg-badge {
+  cursor: help;
+}
+
+.vaire-nav-name {
+  display: none;
+}
+
+.vaire-nav-names-node .nav-file-title-content {
+  display: none;
+}
+
+.vaire-nav-names-node .vaire-nav-name {
+  display: inline;
+}
+
+.vaire-nav-gone .nav-file-title-content,
+.vaire-nav-gone .vaire-nav-name {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* ---- Query blocks (src/query/) ----------------------------------------------------------- *
+ * A ```vaire fenced block renders as `.vaire-query`: either `.vaire-query-list` (a plain
+ * bulleted list of `createRefElement` links, `show: list`) or `.vaire-query-table`
+ * (`show: table` — same column/row shape as `.vaire-deps-table` in 40-views.css, reused here
+ * rather than duplicated since that class isn't guaranteed to be loaded before this file
+ * concatenates — CSS classes are global once styles.css is built, but the rule needs to exist
+ * somewhere). `.vaire-query-footer` is the muted match-count/source/latency line every block
+ * ends with; `.vaire-query-error` is a `.vaire-error` (00-base.css) with a little breathing
+ * room for its `<ul>` of parse/runtime error lines. */
+
+.vaire-query {
+  margin: 0.5em 0;
+}
+
+.vaire-query-list {
+  margin: 0;
+  padding-left: 1.4em;
+}
+
+.vaire-query-list li {
+  padding: 0.1em 0;
+}
+
+.vaire-query-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vaire-query-table th,
+.vaire-query-table td {
+  padding: 0.35em 0.5em;
+  border-bottom: 1px solid var(--background-modifier-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.vaire-query-table th {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+
+.vaire-query-footer {
+  margin-top: 0.4em;
+  font-size: 0.8em;
+}
+
+.vaire-query-error ul {
+  margin: 0.3em 0 0;
+  padding-left: 1.4em;
+}

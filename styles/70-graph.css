@@ -1,0 +1,211 @@
+/*
+ * Vairë for Obsidian — local graph view.
+ *
+ * Obsidian CSS variables only, no global element selectors. The graph itself is drawn on a
+ * <canvas> (colors computed from CSS variables in graph-view.ts), so this file only covers
+ * the surrounding chrome: toolbar, legend, canvas sizing and the hover tooltip.
+ */
+
+.vaire-graph-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+/* ---- Toolbar ------------------------------------------------------------------------------ */
+
+.vaire-graph-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.5em 0.75em;
+  border-bottom: 1px solid var(--background-modifier-border);
+  flex-wrap: wrap;
+}
+
+.vaire-graph-depth-label {
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
+
+.vaire-graph-depth-select {
+  font-size: 0.85em;
+}
+
+.vaire-graph-toggle,
+.vaire-graph-refresh,
+.vaire-graph-export {
+  font-size: 0.85em;
+  padding: 0.25em 0.7em;
+  border-radius: var(--radius-s, 4px);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  cursor: pointer;
+}
+
+.vaire-graph-toggle:hover,
+.vaire-graph-refresh:hover,
+.vaire-graph-export:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-graph-toggle.is-active {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-color: var(--interactive-accent);
+}
+
+.vaire-graph-status {
+  margin-left: auto;
+  font-size: 0.8em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* ---- Body: canvas + legend ------------------------------------------------------------------ */
+
+.vaire-graph-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.vaire-graph-canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--background-primary);
+}
+
+.vaire-graph-canvas {
+  display: block;
+  cursor: grab;
+}
+
+.vaire-graph-canvas:active {
+  cursor: grabbing;
+}
+
+.vaire-graph-legend {
+  width: 11em;
+  flex-shrink: 0;
+  padding: 0.75em;
+  border-left: 1px solid var(--background-modifier-border);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.vaire-graph-legend h3 {
+  margin: 0 0 0.2em;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.vaire-graph-legend-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.85em;
+}
+
+.vaire-graph-legend-swatch {
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.vaire-graph-legend-label {
+  color: var(--text-normal);
+  overflow-wrap: anywhere;
+}
+
+/* ---- Tooltip ------------------------------------------------------------------------------ */
+
+.vaire-graph-tooltip {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  padding: 0.25em 0.5em;
+  font-size: 0.8em;
+  color: var(--text-normal);
+  white-space: nowrap;
+  box-shadow: var(--shadow-s, 0 1px 3px rgba(0, 0, 0, 0.2));
+}
+
+/*
+ * Whole-package graph view (`feat/package-graph`). Shares `.vaire-graph-body`,
+ * `.vaire-graph-canvas-wrap`, `.vaire-graph-canvas`, `.vaire-graph-toggle`,
+ * `.vaire-graph-refresh`, `.vaire-graph-status` and `.vaire-graph-tooltip` with the local
+ * graph above; only the toolbar layout and the type-filter chips are specific to this view.
+ */
+
+.vaire-package-graph-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.vaire-pkg-graph-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 0.75em;
+  border-bottom: 1px solid var(--background-modifier-border);
+  flex-wrap: wrap;
+}
+
+.vaire-pkg-graph-btn-group {
+  display: flex;
+  gap: 0.25em;
+}
+
+.vaire-pkg-graph-filter {
+  font-size: 0.85em;
+  padding: 0.25em 0.6em;
+  border-radius: var(--radius-s, 4px);
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  color: var(--text-normal);
+  min-width: 10em;
+}
+
+.vaire-pkg-graph-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+  padding: 0.4em 0.75em;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.vaire-pkg-graph-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.vaire-pkg-graph-chip-swatch {
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.vaire-pkg-graph-chip.is-off {
+  opacity: 0.35;
+  text-decoration: line-through;
+}

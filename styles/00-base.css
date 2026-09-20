@@ -1,0 +1,251 @@
+/*
+ * Vairë for Obsidian — base styles.
+ *
+ * Obsidian CSS variables only, no global element selectors. This file gives every class
+ * name from DESIGN.md a sensible default; the rendering/suggest/views feature passes are
+ * expected to refine these, not replace the variable choices.
+ */
+
+:root {
+  --vaire-dot-ok: var(--color-green, #4caf50);
+  --vaire-dot-warn: var(--text-warning, #e0a640);
+  --vaire-dot-off: var(--text-faint);
+  --vaire-badge-size: 0.7em;
+}
+
+/*
+ * `--vaire-type-color` (feat/type-colors): set per type by `src/theme/index.ts`'s injected
+ * `<style id="vaire-type-colors">` (e.g. `.vaire-type-decision { --vaire-type-color:
+ * #b0394a; }`, light/dark under `body:not(.theme-dark)` / `body.theme-dark`) on the same
+ * element that carries the `vaire-type-<t>` class. Unset entirely when
+ * `settings.typeColorSource === 'off'` (no stylesheet is injected at all) or for a type no
+ * vault package declares — every rule below falls back to a neutral color/wash rather than
+ * requiring the variable, so this file works unchanged whether or not that stylesheet exists.
+ */
+
+/* ---- References (reading mode + live preview) --------------------------------------- */
+
+.vaire-link {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.vaire-link:hover {
+  text-decoration: underline;
+}
+
+.vaire-link::before {
+  content: attr(data-vaire-type);
+  font-size: var(--vaire-badge-size);
+  text-transform: uppercase;
+  /* feat/type-colors: colored by `--vaire-type-color` (inherited from the `.vaire-type-<t>`
+   * class on this same `.vaire-link`, see the :root comment above); a translucent wash of
+   * the same color for the background, both falling back to today's plain muted badge when
+   * the variable is unset. */
+  color: var(--vaire-type-color, inherit);
+  background: color-mix(in srgb, var(--vaire-type-color, var(--text-muted)) 15%, transparent);
+  border-radius: 3px;
+  padding: 0.05em 0.35em;
+  margin-right: 0.25em;
+  letter-spacing: 0.02em;
+}
+
+/* Type labels switched off (settings → Type labels; src/render/type-labels.ts). */
+body.vaire-hide-link-types .vaire-link::before {
+  content: none;
+}
+
+body.vaire-hide-tab-types .vaire-title-badge {
+  display: none;
+}
+
+.vaire-link-external {
+  text-decoration: underline dotted;
+}
+
+.vaire-link-external::after {
+  content: '↗';
+  margin-left: 0.15em;
+  font-size: var(--vaire-badge-size);
+  color: var(--text-muted);
+}
+
+.vaire-link-external .vaire-pkg-pill {
+  margin-left: 0.35em;
+  padding: 0 0.4em;
+  font-size: var(--vaire-badge-size);
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+}
+
+.vaire-link-unlinked {
+  color: var(--text-muted);
+  text-decoration: underline dashed;
+}
+
+.vaire-link-unlinked::after {
+  content: '⊘';
+  margin-left: 0.15em;
+  font-size: var(--vaire-badge-size);
+}
+
+.vaire-link-missing {
+  color: var(--text-error);
+  text-decoration: underline dashed;
+}
+
+.vaire-loose-end {
+  color: var(--vaire-dot-warn);
+  font-style: italic;
+  text-decoration: underline dotted;
+  cursor: pointer;
+}
+
+.vaire-loose-end::before {
+  content: '? ' attr(data-vaire-type-hint);
+  text-transform: uppercase;
+  font-size: var(--vaire-badge-size);
+  font-style: normal;
+  margin-right: 0.25em;
+  opacity: 0.8;
+}
+
+/* ---- Live preview (CM6) --------------------------------------------------------------- */
+
+.vaire-lp-link,
+.vaire-lp-loose {
+  border-radius: 3px;
+}
+
+.vaire-lp-link::after,
+.vaire-lp-loose::after {
+  content: attr(data-vaire-name);
+  color: var(--text-faint);
+  font-size: var(--vaire-badge-size);
+  margin-left: 0.3em;
+  opacity: 0.7;
+}
+
+/* ---- Node header ------------------------------------------------------------------------ */
+
+.vaire-node-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  padding: 0.75em 1em;
+  margin-bottom: 1em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 6px);
+}
+
+.vaire-node-header .vaire-crumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-monospace);
+  color: var(--text-muted);
+}
+
+.vaire-node-header .vaire-aliases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+}
+
+.vaire-node-header .vaire-alias-chip {
+  padding: 0.1em 0.5em;
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+  font-size: 0.85em;
+}
+
+.vaire-node-header .vaire-superseded-banner {
+  padding: 0.4em 0.6em;
+  border-radius: var(--radius-s, 4px);
+  background: var(--background-modifier-error, var(--background-modifier-border));
+  color: var(--text-error);
+}
+
+.vaire-node-header .vaire-edge-row {
+  display: flex;
+  gap: 0.5em;
+  align-items: baseline;
+}
+
+.vaire-node-header .vaire-edge-key {
+  color: var(--text-muted);
+  min-width: 8em;
+}
+
+/* ---- Status dot (crumb line) ----------------------------------------------------------- */
+
+.vaire-status-dot {
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+
+.vaire-status-dot.dot-ok {
+  background: var(--vaire-dot-ok);
+}
+
+.vaire-status-dot.dot-warn {
+  background: var(--vaire-dot-warn);
+}
+
+.vaire-status-dot.dot-off {
+  background: var(--vaire-dot-off);
+}
+
+/* ---- Generic panel scaffolding (package/node/catalog views) ---------------------------- */
+
+.vaire-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+}
+
+.vaire-panel table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vaire-panel th,
+.vaire-panel td {
+  padding: 0.3em 0.5em;
+  border-bottom: 1px solid var(--background-modifier-border);
+  text-align: left;
+}
+
+.vaire-badge {
+  display: inline-block;
+  padding: 0.1em 0.5em;
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+
+/*
+ * feat/type-colors: a `.vaire-badge` that is *also* a type badge (carries a `vaire-type-<t>`
+ * class — the node header's type span, the node panel's type badge) picks up
+ * `--vaire-type-color` instead of the plain neutral badge above. The attribute-selector
+ * gate (rather than recoloring `.vaire-badge` itself) keeps unrelated badges — version
+ * pills, catalog state pills — on the original neutral styling.
+ */
+.vaire-badge[class*='vaire-type-'] {
+  color: var(--vaire-type-color, inherit);
+  background: color-mix(in srgb, var(--vaire-type-color, var(--text-muted)) 15%, transparent);
+}
+
+.vaire-settings-detected {
+  margin: 0.25em 0 1em;
+  color: var(--text-muted);
+  font-size: 0.9em;
+}

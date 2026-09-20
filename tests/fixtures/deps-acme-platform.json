@@ -1,0 +1,462 @@
+{
+  "name": "acme-platform",
+  "version": "1.1.0",
+  "dependencies": [
+    {
+      "name": "acme-security",
+      "constraint": "^1",
+      "version": "1.2.0",
+      "resolved": "../../../../.vaire/store/acme-security/1.2.0",
+      "satisfied": true,
+      "dependencies": [
+        {
+          "name": "acme-org",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-org' (declared by 'acme-security') is not linked — run `vaire add acme-org --link <path>` in 1.2.0"
+        }
+      ]
+    },
+    {
+      "name": "acme-org",
+      "constraint": "^1",
+      "note": "dependency error: dependency 'acme-org' (declared by 'acme-platform') is not linked — run `vaire add acme-org --link <path>` in acme-platform"
+    },
+    {
+      "name": "acme-vision",
+      "constraint": "^1",
+      "version": "1.0.0",
+      "resolved": "../../../../.vaire/store/acme-vision/1.0.0",
+      "satisfied": true,
+      "dependencies": [
+        {
+          "name": "acme-arch",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-arch' (declared by 'acme-vision') is not linked — run `vaire add acme-arch --link <path>` in 1.0.0"
+        },
+        {
+          "name": "acme-general",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-general' (declared by 'acme-vision') is not linked — run `vaire add acme-general --link <path>` in 1.0.0"
+        },
+        {
+          "name": "acme-security",
+          "constraint": "^1",
+          "version": "1.2.0",
+          "resolved": "../../../../.vaire/store/acme-security/1.2.0",
+          "satisfied": true,
+          "dependencies": [
+            {
+              "name": "acme-org",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-org' (declared by 'acme-security') is not linked — run `vaire add acme-org --link <path>` in 1.2.0"
+            }
+          ]
+        },
+        {
+          "name": "acme-it",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-it' (declared by 'acme-vision') is not linked — run `vaire add acme-it --link <path>` in 1.0.0"
+        },
+        {
+          "name": "acme-org",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-org' (declared by 'acme-vision') is not linked — run `vaire add acme-org --link <path>` in 1.0.0"
+        },
+        {
+          "name": "acme-ppl",
+          "constraint": "^1",
+          "version": "1.5.0",
+          "resolved": "../../../../.vaire/store/acme-ppl/1.5.0",
+          "satisfied": true,
+          "dependencies": [
+            {
+              "name": "acme-general",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-general' (declared by 'acme-ppl') is not linked — run `vaire add acme-general --link <path>` in 1.5.0"
+            },
+            {
+              "name": "acme-it",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-it' (declared by 'acme-ppl') is not linked — run `vaire add acme-it --link <path>` in 1.5.0"
+            },
+            {
+              "name": "acme-org",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-org' (declared by 'acme-ppl') is not linked — run `vaire add acme-org --link <path>` in 1.5.0"
+            },
+            {
+              "name": "atlas-general",
+              "constraint": "^1",
+              "version": "1.0.0",
+              "resolved": "../../../../.vaire/store/atlas-general/1.0.0",
+              "satisfied": true,
+              "dependencies": [
+                {
+                  "name": "acme-general",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-general' (declared by 'atlas-general') is not linked — run `vaire add acme-general --link <path>` in 1.0.0"
+                },
+                {
+                  "name": "acme-it",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-it' (declared by 'atlas-general') is not linked — run `vaire add acme-it --link <path>` in 1.0.0"
+                },
+                {
+                  "name": "acme-org",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-org' (declared by 'atlas-general') is not linked — run `vaire add acme-org --link <path>` in 1.0.0"
+                },
+                {
+                  "name": "acme-ppl",
+                  "constraint": "^1",
+                  "version": "1.5.0",
+                  "resolved": "../../../../.vaire/store/acme-ppl/1.5.0",
+                  "satisfied": true,
+                  "cycle": true
+                },
+                {
+                  "name": "acme-platform",
+                  "constraint": "^1",
+                  "version": "1.1.0",
+                  "resolved": ".",
+                  "satisfied": true,
+                  "cycle": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "acme-ppl",
+      "constraint": "^1",
+      "version": "1.5.0",
+      "resolved": "../../../../.vaire/store/acme-ppl/1.5.0",
+      "satisfied": true,
+      "dependencies": [
+        {
+          "name": "acme-general",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-general' (declared by 'acme-ppl') is not linked — run `vaire add acme-general --link <path>` in 1.5.0"
+        },
+        {
+          "name": "acme-it",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-it' (declared by 'acme-ppl') is not linked — run `vaire add acme-it --link <path>` in 1.5.0"
+        },
+        {
+          "name": "acme-org",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-org' (declared by 'acme-ppl') is not linked — run `vaire add acme-org --link <path>` in 1.5.0"
+        },
+        {
+          "name": "atlas-general",
+          "constraint": "^1",
+          "version": "1.0.0",
+          "resolved": "../../../../.vaire/store/atlas-general/1.0.0",
+          "satisfied": true,
+          "dependencies": [
+            {
+              "name": "acme-general",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-general' (declared by 'atlas-general') is not linked — run `vaire add acme-general --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-it",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-it' (declared by 'atlas-general') is not linked — run `vaire add acme-it --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-org",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-org' (declared by 'atlas-general') is not linked — run `vaire add acme-org --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-ppl",
+              "constraint": "^1",
+              "version": "1.5.0",
+              "resolved": "../../../../.vaire/store/acme-ppl/1.5.0",
+              "satisfied": true,
+              "cycle": true
+            },
+            {
+              "name": "acme-platform",
+              "constraint": "^1",
+              "version": "1.1.0",
+              "resolved": ".",
+              "satisfied": true,
+              "cycle": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "atlas-general",
+      "constraint": "^1",
+      "version": "1.0.0",
+      "resolved": "../../../../.vaire/store/atlas-general/1.0.0",
+      "satisfied": true,
+      "dependencies": [
+        {
+          "name": "acme-general",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-general' (declared by 'atlas-general') is not linked — run `vaire add acme-general --link <path>` in 1.0.0"
+        },
+        {
+          "name": "acme-it",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-it' (declared by 'atlas-general') is not linked — run `vaire add acme-it --link <path>` in 1.0.0"
+        },
+        {
+          "name": "acme-org",
+          "constraint": "^1",
+          "note": "dependency error: dependency 'acme-org' (declared by 'atlas-general') is not linked — run `vaire add acme-org --link <path>` in 1.0.0"
+        },
+        {
+          "name": "acme-ppl",
+          "constraint": "^1",
+          "version": "1.5.0",
+          "resolved": "../../../../.vaire/store/acme-ppl/1.5.0",
+          "satisfied": true,
+          "dependencies": [
+            {
+              "name": "acme-general",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-general' (declared by 'acme-ppl') is not linked — run `vaire add acme-general --link <path>` in 1.5.0"
+            },
+            {
+              "name": "acme-it",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-it' (declared by 'acme-ppl') is not linked — run `vaire add acme-it --link <path>` in 1.5.0"
+            },
+            {
+              "name": "acme-org",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-org' (declared by 'acme-ppl') is not linked — run `vaire add acme-org --link <path>` in 1.5.0"
+            },
+            {
+              "name": "atlas-general",
+              "constraint": "^1",
+              "version": "1.0.0",
+              "resolved": "../../../../.vaire/store/atlas-general/1.0.0",
+              "satisfied": true,
+              "cycle": true
+            }
+          ]
+        },
+        {
+          "name": "acme-platform",
+          "constraint": "^1",
+          "version": "1.1.0",
+          "resolved": ".",
+          "satisfied": true,
+          "cycle": true
+        }
+      ]
+    },
+    {
+      "name": "atlas-services",
+      "constraint": "^1",
+      "version": "1.0.0",
+      "resolved": "../../../../.vaire/store/atlas-services/1.0.0",
+      "satisfied": true,
+      "dependencies": [
+        {
+          "name": "acme-security",
+          "constraint": "^1",
+          "version": "1.2.0",
+          "resolved": "../../../../.vaire/store/acme-security/1.2.0",
+          "satisfied": true,
+          "dependencies": [
+            {
+              "name": "acme-org",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-org' (declared by 'acme-security') is not linked — run `vaire add acme-org --link <path>` in 1.2.0"
+            }
+          ]
+        },
+        {
+          "name": "acme-vision",
+          "constraint": "^1",
+          "version": "1.0.0",
+          "resolved": "../../../../.vaire/store/acme-vision/1.0.0",
+          "satisfied": true,
+          "dependencies": [
+            {
+              "name": "acme-arch",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-arch' (declared by 'acme-vision') is not linked — run `vaire add acme-arch --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-general",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-general' (declared by 'acme-vision') is not linked — run `vaire add acme-general --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-security",
+              "constraint": "^1",
+              "version": "1.2.0",
+              "resolved": "../../../../.vaire/store/acme-security/1.2.0",
+              "satisfied": true,
+              "dependencies": [
+                {
+                  "name": "acme-org",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-org' (declared by 'acme-security') is not linked — run `vaire add acme-org --link <path>` in 1.2.0"
+                }
+              ]
+            },
+            {
+              "name": "acme-it",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-it' (declared by 'acme-vision') is not linked — run `vaire add acme-it --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-org",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-org' (declared by 'acme-vision') is not linked — run `vaire add acme-org --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-ppl",
+              "constraint": "^1",
+              "version": "1.5.0",
+              "resolved": "../../../../.vaire/store/acme-ppl/1.5.0",
+              "satisfied": true,
+              "dependencies": [
+                {
+                  "name": "acme-general",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-general' (declared by 'acme-ppl') is not linked — run `vaire add acme-general --link <path>` in 1.5.0"
+                },
+                {
+                  "name": "acme-it",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-it' (declared by 'acme-ppl') is not linked — run `vaire add acme-it --link <path>` in 1.5.0"
+                },
+                {
+                  "name": "acme-org",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-org' (declared by 'acme-ppl') is not linked — run `vaire add acme-org --link <path>` in 1.5.0"
+                },
+                {
+                  "name": "atlas-general",
+                  "constraint": "^1",
+                  "version": "1.0.0",
+                  "resolved": "../../../../.vaire/store/atlas-general/1.0.0",
+                  "satisfied": true,
+                  "dependencies": [
+                    {
+                      "name": "acme-general",
+                      "constraint": "^1",
+                      "note": "dependency error: dependency 'acme-general' (declared by 'atlas-general') is not linked — run `vaire add acme-general --link <path>` in 1.0.0"
+                    },
+                    {
+                      "name": "acme-it",
+                      "constraint": "^1",
+                      "note": "dependency error: dependency 'acme-it' (declared by 'atlas-general') is not linked — run `vaire add acme-it --link <path>` in 1.0.0"
+                    },
+                    {
+                      "name": "acme-org",
+                      "constraint": "^1",
+                      "note": "dependency error: dependency 'acme-org' (declared by 'atlas-general') is not linked — run `vaire add acme-org --link <path>` in 1.0.0"
+                    },
+                    {
+                      "name": "acme-ppl",
+                      "constraint": "^1",
+                      "version": "1.5.0",
+                      "resolved": "../../../../.vaire/store/acme-ppl/1.5.0",
+                      "satisfied": true,
+                      "cycle": true
+                    },
+                    {
+                      "name": "acme-platform",
+                      "constraint": "^1",
+                      "version": "1.1.0",
+                      "resolved": ".",
+                      "satisfied": true,
+                      "cycle": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "atlas-general",
+          "constraint": "^1",
+          "version": "1.0.0",
+          "resolved": "../../../../.vaire/store/atlas-general/1.0.0",
+          "satisfied": true,
+          "dependencies": [
+            {
+              "name": "acme-general",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-general' (declared by 'atlas-general') is not linked — run `vaire add acme-general --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-it",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-it' (declared by 'atlas-general') is not linked — run `vaire add acme-it --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-org",
+              "constraint": "^1",
+              "note": "dependency error: dependency 'acme-org' (declared by 'atlas-general') is not linked — run `vaire add acme-org --link <path>` in 1.0.0"
+            },
+            {
+              "name": "acme-ppl",
+              "constraint": "^1",
+              "version": "1.5.0",
+              "resolved": "../../../../.vaire/store/acme-ppl/1.5.0",
+              "satisfied": true,
+              "dependencies": [
+                {
+                  "name": "acme-general",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-general' (declared by 'acme-ppl') is not linked — run `vaire add acme-general --link <path>` in 1.5.0"
+                },
+                {
+                  "name": "acme-it",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-it' (declared by 'acme-ppl') is not linked — run `vaire add acme-it --link <path>` in 1.5.0"
+                },
+                {
+                  "name": "acme-org",
+                  "constraint": "^1",
+                  "note": "dependency error: dependency 'acme-org' (declared by 'acme-ppl') is not linked — run `vaire add acme-org --link <path>` in 1.5.0"
+                },
+                {
+                  "name": "atlas-general",
+                  "constraint": "^1",
+                  "version": "1.0.0",
+                  "resolved": "../../../../.vaire/store/atlas-general/1.0.0",
+                  "satisfied": true,
+                  "cycle": true
+                }
+              ]
+            },
+            {
+              "name": "acme-platform",
+              "constraint": "^1",
+              "version": "1.1.0",
+              "resolved": ".",
+              "satisfied": true,
+              "cycle": true
+            }
+          ]
+        },
+        {
+          "name": "acme-platform",
+          "constraint": "^1",
+          "version": "1.1.0",
+          "resolved": ".",
+          "satisfied": true,
+          "cycle": true
+        }
+      ]
+    }
+  ]
+}

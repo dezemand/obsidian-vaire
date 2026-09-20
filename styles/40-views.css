@@ -1,0 +1,1222 @@
+/*
+ * Vairë for Obsidian — package index view + node panel.
+ *
+ * Obsidian CSS variables only, no global element selectors. Shared scaffolding
+ * (`.vaire-panel`, `.vaire-badge`, status dot, node header) lives in 00-base.css; this file
+ * covers the section layout, tables, chips and state badges specific to PackageView/NodeView.
+ */
+
+.vaire-package-view,
+.vaire-node-view {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+.vaire-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.vaire-section h2 {
+  margin: 0;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.vaire-section h3 {
+  margin: 0.4em 0 0.2em;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.vaire-section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+.vaire-section-header-row h2 {
+  margin: 0;
+}
+
+/* ---- Header ----------------------------------------------------------------------------- */
+
+.vaire-package-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+}
+
+.vaire-package-title-row h1 {
+  margin: 0;
+}
+
+.vaire-package-desc {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.vaire-actions {
+  display: flex;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.vaire-actions-inline {
+  display: flex;
+  gap: 0.35em;
+  flex-wrap: wrap;
+}
+
+/* ---- Status ----------------------------------------------------------------------------- */
+
+.vaire-status-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.vaire-status-item {
+  white-space: nowrap;
+}
+
+.vaire-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--text-muted);
+}
+
+/* ---- README ----------------------------------------------------------------------------- */
+
+.vaire-readme {
+  padding: 0.75em 1em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 6px);
+}
+
+/* ---- Contents: chips + filter -------------------------------------------------------------- */
+
+.vaire-contents-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.vaire-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+}
+
+.vaire-chip {
+  padding: 0.15em 0.6em;
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  border: none;
+  cursor: pointer;
+  font-size: 0.8em;
+}
+
+.vaire-chip:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-chip.is-active {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.vaire-text-filter {
+  width: 100%;
+}
+
+.vaire-node-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.vaire-node-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.vaire-node-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  padding: 0.2em 0;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.vaire-node-link {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.vaire-node-link:hover {
+  text-decoration: underline;
+}
+
+.vaire-nid {
+  color: var(--text-faint);
+  font-size: 0.85em;
+}
+
+.vaire-gone {
+  opacity: 0.55;
+}
+
+.vaire-gone .vaire-node-link {
+  text-decoration: line-through;
+}
+
+/* ---- Tables (Dependencies) ----------------------------------------------------------------- */
+
+.vaire-deps-table,
+.vaire-panel table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vaire-deps-table th,
+.vaire-deps-table td {
+  padding: 0.35em 0.5em;
+  border-bottom: 1px solid var(--background-modifier-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.vaire-deps-table th {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+
+.vaire-dep-name {
+  display: inline-block;
+  padding-left: calc(var(--vaire-indent, 0) * 1.2em);
+}
+
+.vaire-dep-note {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  white-space: normal;
+  max-width: 28em;
+}
+
+.vaire-dep-root {
+  font-family: var(--font-monospace);
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
+
+/* ---- State badges ------------------------------------------------------------------------- */
+
+.vaire-state-badge {
+  display: inline-block;
+  padding: 0.1em 0.5em;
+  border-radius: 999px;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.vaire-state-ok {
+  background: color-mix(in srgb, var(--color-green, #4caf50) 18%, transparent);
+  color: var(--color-green, #4caf50);
+}
+
+.vaire-state-unlinked,
+.vaire-state-mismatch {
+  background: color-mix(in srgb, var(--text-warning) 18%, transparent);
+  color: var(--text-warning);
+}
+
+.vaire-state-error {
+  background: color-mix(in srgb, var(--text-error) 18%, transparent);
+  color: var(--text-error);
+}
+
+/* ---- Unresolved / findings rows ------------------------------------------------------------ */
+
+.vaire-unresolved-row,
+.vaire-finding-row,
+.vaire-loose-end-row,
+.vaire-backlink-row,
+.vaire-ref-row,
+.vaire-supersedes-row,
+.vaire-edge-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  padding: 0.2em 0;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.vaire-finding-kind {
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.vaire-finding-detail {
+  color: var(--text-muted);
+}
+
+.vaire-path-link {
+  color: var(--text-accent);
+  font-family: var(--font-monospace);
+  font-size: 0.85em;
+  text-decoration: none;
+}
+
+.vaire-path-link:hover {
+  text-decoration: underline;
+}
+
+.vaire-muted {
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+.vaire-empty {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.vaire-error {
+  color: var(--text-error);
+}
+
+/* ---- Node view identity ------------------------------------------------------------------- */
+
+.vaire-identity-name {
+  margin: 0.2em 0;
+}
+
+.vaire-identity-meta {
+  display: flex;
+  gap: 1em;
+}
+
+.vaire-copyable {
+  cursor: pointer;
+}
+
+/* NodeView's identity section is not nested inside `.vaire-node-header` (that's the reading-
+   mode header, a different element), so it needs its own crumb/alias/banner styling rather
+   than relying on 00-base.css's `.vaire-node-header .vaire-crumb` etc. */
+
+.vaire-crumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-monospace);
+  color: var(--text-muted);
+}
+
+.vaire-aliases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+}
+
+.vaire-alias-chip {
+  padding: 0.1em 0.5em;
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+  font-size: 0.85em;
+}
+
+.vaire-superseded-banner {
+  padding: 0.4em 0.6em;
+  border-radius: var(--radius-s, 4px);
+  background: var(--background-modifier-error, var(--background-modifier-border));
+  color: var(--text-error);
+}
+
+.vaire-edge-key {
+  color: var(--text-muted);
+  min-width: 8em;
+  flex-shrink: 0;
+}
+
+.vaire-edge-values {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.vaire-backlink-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Backlink context: snippet rows + ref_type badge (node panel + dedicated view) -------- */
+
+.vaire-backlink-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  padding: 0.3em 0;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.vaire-backlink-item .vaire-backlink-row {
+  border-bottom: none;
+  padding: 0;
+}
+
+.vaire-reftype-badge {
+  font-family: var(--font-monospace);
+}
+
+.vaire-backlink-snippet {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  line-height: 1.4;
+  cursor: pointer;
+  border-radius: var(--radius-s, 4px);
+  padding: 0.1em 0.3em;
+  margin: 0 -0.3em;
+}
+
+.vaire-backlink-snippet:hover,
+.vaire-backlink-snippet:focus-visible {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+mark.vaire-hit {
+  background: var(--text-highlight-bg, rgba(255, 208, 0, 0.35));
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 0.1em;
+}
+
+/* ---- Dedicated Vairë backlinks view --------------------------------------------------- */
+
+.vaire-backlinks-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.vaire-backlinks-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.75em 1em 0.5em;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.vaire-backlinks-target {
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.vaire-backlinks-search {
+  width: 100%;
+}
+
+.vaire-backlinks-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--text-muted);
+  font-size: 0.85em;
+  cursor: pointer;
+}
+
+.vaire-backlinks-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5em 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.vaire-backlinks-footer {
+  padding: 0.4em 1em;
+  border-top: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: 0.8em;
+}
+
+.vaire-backlinks-type-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.vaire-backlinks-type-section h3 {
+  margin: 0.4em 0 0.1em;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.vaire-backlinks-group {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  overflow: hidden;
+}
+
+.vaire-backlinks-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.35em 0.5em;
+  background: var(--background-secondary);
+  cursor: pointer;
+}
+
+.vaire-backlinks-group-header:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-chevron {
+  display: inline-block;
+  font-size: 0.75em;
+  color: var(--text-muted);
+  transition: transform 0.1s ease;
+  transform: rotate(0deg);
+}
+
+.vaire-chevron.is-collapsed {
+  transform: rotate(-90deg);
+}
+
+.vaire-backlinks-group-rows {
+  display: flex;
+  flex-direction: column;
+  padding: 0.2em 0.6em 0.4em;
+}
+
+.vaire-backlinks-group-rows .vaire-backlink-item:last-child {
+  border-bottom: none;
+}
+
+/* ---- Release section (package index) --------------------------------------------------- */
+
+/*
+ * The Release button in release-modal.ts / section.ts gets the `mod-warning` class directly
+ * (Obsidian's own core stylesheet renders that as a destructive red button) — nothing to
+ * redefine here. This block covers the section's own layout: the pending-release plan, the
+ * MAJOR toggle, the four id lists, and the changelog table.
+ */
+
+.vaire-release-pending,
+.vaire-release-cut,
+.vaire-release-packpush,
+.vaire-release-changelog {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.vaire-release-plan-actions {
+  align-items: center;
+}
+
+.vaire-release-major-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+.vaire-release-plan {
+  padding: 0.6em 0.8em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 6px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.vaire-release-plan:empty {
+  display: none;
+}
+
+.vaire-release-plan-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+.vaire-release-lists {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  margin-top: 0.4em;
+}
+
+.vaire-release-list h4 {
+  margin: 0 0 0.2em;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.vaire-release-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+.vaire-release-list-row {
+  padding: 0.1em 0;
+}
+
+.vaire-release-result {
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+/* ---- Cut-release modal -------------------------------------------------------------------- */
+
+.vaire-release-modal .vaire-release-plan {
+  margin-bottom: 0.6em;
+}
+
+.vaire-release-hints {
+  margin: 0.2em 0 0.6em;
+  padding-left: 1.4em;
+  color: var(--text-muted);
+  font-size: 0.85em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.vaire-release-summary-input {
+  width: 100%;
+  min-height: 10em;
+  font-family: var(--font-monospace);
+  resize: vertical;
+}
+
+/* ---- Changelog table ---------------------------------------------------------------------- */
+
+.vaire-changelog-table td,
+.vaire-changelog-table th {
+  white-space: nowrap;
+}
+
+.vaire-identity-actions {
+  display: flex;
+  gap: 0.5em;
+  margin: 0.2em 0;
+}
+
+/* ---- Supersede confirmation modal (src/authoring/supersede-modal.ts) --------------------- */
+
+.vaire-supersede-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.vaire-supersede-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.vaire-supersede-arrow {
+  color: var(--text-muted);
+}
+
+.vaire-supersede-backlinks {
+  gap: 0.35em;
+}
+
+.vaire-supersede-backlink-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 12em;
+  overflow-y: auto;
+  padding: 0.4em 0.6em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+}
+
+.vaire-supersede-warning {
+  padding: 0.6em 0.8em;
+  border-radius: var(--radius-s, 4px);
+  background: var(--background-modifier-error, var(--background-modifier-border));
+  color: var(--text-error);
+  font-size: 0.9em;
+}
+
+.vaire-supersede-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5em;
+}
+
+/* ---- Section header icon actions (Add alias / Add edge) -------------------------------- */
+
+.vaire-section-header-row .vaire-actions-inline {
+  align-items: center;
+}
+
+.vaire-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8em;
+  height: 1.8em;
+  padding: 0;
+}
+
+.vaire-icon-btn svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.vaire-edge-remove-hint {
+  cursor: help;
+}
+
+/* ---- Search panel -------------------------------------------------------------------------
+   The persistent search panel (search-view.ts). `--text-highlight-bg` is a real Obsidian
+   variable (used for the app's own `==highlight==` rendering) so it's not redefined here —
+   `mark.vaire-hit` just falls back to a literal if it's ever somehow unset. */
+
+.vaire-search-view {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.vaire-search-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+}
+
+.vaire-search-pkg-name {
+  font-weight: 600;
+}
+
+.vaire-search-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.vaire-search-input {
+  width: 100%;
+}
+
+.vaire-search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+
+.vaire-search-filters select,
+.vaire-search-scope-input {
+  flex: 1 1 auto;
+  min-width: 8em;
+}
+
+.vaire-search-history:empty {
+  display: none;
+}
+
+.vaire-search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+
+.vaire-search-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  padding: 0.6em 0.75em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 6px);
+}
+
+.vaire-search-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+/* The card already shows its own type badge (below); suppress the ref element's built-in
+   `::before { content: attr(data-vaire-type) }` prefix (00-base.css) so it isn't shown twice. */
+
+.vaire-search-card-header .vaire-link::before {
+  content: none;
+}
+
+.vaire-search-pkg-badge {
+  font-size: var(--vaire-badge-size);
+  padding: 0.05em 0.4em;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.vaire-search-score {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.vaire-search-anchors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  margin-top: 0.2em;
+}
+
+.vaire-search-anchor {
+  padding: 0.3em 0.4em;
+  border-radius: var(--radius-s, 4px);
+  cursor: pointer;
+}
+
+.vaire-search-anchor:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-search-anchor-meta {
+  color: var(--text-muted);
+  font-family: var(--font-monospace);
+  font-size: 0.8em;
+}
+
+.vaire-search-snippet {
+  font-size: 0.9em;
+  color: var(--text-normal);
+  overflow-wrap: anywhere;
+}
+
+/* ---- Health strip (top of the package view) ------------------------------------------------
+ * Renders nothing while healthy — only a loading line while checking, then one colored row per
+ * issue. Severity colors mirror the state badges above (error/warning/info -> --text-error /
+ * --text-warning / --text-muted-ish accent), each row getting a left border "strip" accent. */
+
+.vaire-health {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.vaire-health:empty {
+  display: none;
+}
+
+.vaire-health-loading {
+  color: var(--text-faint);
+  font-size: 0.85em;
+  font-style: italic;
+}
+
+.vaire-health-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75em;
+  padding: 0.5em 0.75em;
+  border-radius: var(--radius-s, 4px);
+  border-left: 3px solid transparent;
+  background: var(--background-secondary);
+}
+
+.vaire-health-message {
+  color: var(--text-normal);
+}
+
+.vaire-health-severity-error {
+  border-left-color: var(--text-error);
+  background: color-mix(in srgb, var(--text-error) 10%, var(--background-secondary));
+}
+
+.vaire-health-severity-warning {
+  border-left-color: var(--text-warning);
+  background: color-mix(in srgb, var(--text-warning) 10%, var(--background-secondary));
+}
+
+.vaire-health-severity-info {
+  border-left-color: var(--text-accent, var(--interactive-accent));
+  background: var(--background-secondary);
+}
+
+/* ---- Notice actions (health-check summary, init-package confirmation) ---------------------- */
+
+.vaire-notice-action {
+  display: inline-block;
+  margin-top: 0.3em;
+  color: var(--text-accent);
+  text-decoration: none;
+}
+
+.vaire-notice-action:hover {
+  text-decoration: underline;
+}
+
+.vaire-health-notice-list {
+  margin: 0.3em 0;
+  padding-left: 1.2em;
+  font-size: 0.9em;
+}
+
+/* ---- Loose-end workbench (src/workbench/) ------------------------------------------------- */
+
+.vaire-workbench-view {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.vaire-workbench-view h1 {
+  margin: 0;
+}
+
+.vaire-workbench-header {
+  gap: 0.75em;
+}
+
+.vaire-workbench-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.vaire-workbench-group {
+  padding: 0.75em 1em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 6px);
+  gap: 0.4em;
+}
+
+.vaire-workbench-group-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.vaire-workbench-label {
+  font-size: 1em;
+}
+
+.vaire-workbench-descriptors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+}
+
+.vaire-workbench-occurrences {
+  display: flex;
+  flex-direction: column;
+}
+
+.vaire-workbench-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.vaire-workbench-suggestion {
+  cursor: pointer;
+  border: none;
+  font: inherit;
+}
+
+/* ---- Rename node id modal (src/authoring/rename-modal.ts) ------------------------------- */
+
+.vaire-rename-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.vaire-rename-wide {
+  width: 100%;
+}
+
+.vaire-rename-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.vaire-rename-arrow {
+  color: var(--text-muted);
+}
+
+.vaire-rename-backlinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.vaire-rename-backlink-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.vaire-rename-backlink-group > div {
+  display: flex;
+  flex-direction: column;
+  max-height: 8em;
+  overflow-y: auto;
+  padding: 0.4em 0.6em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  gap: 0.2em;
+}
+
+/* Two strategy cards, side by side on a wide modal and stacked once there isn't room to
+ * compare them at a glance — this pair is the whole point of the feature (BRANCHES.md: "both
+ * alternatives... so they can be compared"), so the layout should make the trade-off visible
+ * at a glance rather than hiding the second option behind a scroll. */
+
+.vaire-rename-strategies {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16em, 1fr));
+  gap: 0.75em;
+}
+
+.vaire-rename-strategy-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.75em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 6px);
+}
+
+.vaire-rename-strategy-card p {
+  margin: 0;
+}
+
+.vaire-rename-strategy-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+}
+
+.vaire-rename-strategy-title {
+  font-weight: 600;
+}
+
+.vaire-rename-warning {
+  padding: 0.5em 0.7em;
+  border-radius: var(--radius-s, 4px);
+  background: var(--background-modifier-error, var(--background-modifier-border));
+  color: var(--text-error);
+  font-size: 0.85em;
+}
+
+.vaire-rename-dangling {
+  display: flex;
+  flex-direction: column;
+  max-height: 8em;
+  overflow-y: auto;
+  padding: 0.4em 0.6em;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  gap: 0.2em;
+}
+
+.vaire-rename-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5em;
+}
+
+/* ---- History section (node panel; src/history/) ------------------------------------------
+   Two switchable sub-sections (`settings.historySource`): a releases table (reuses
+   .vaire-deps-table) and a git commit list. Kept in this file rather than a new stylesheet
+   since it's part of the node panel, like everything else here. */
+
+.vaire-history-releases,
+.vaire-history-git {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.vaire-history-releases-table td,
+.vaire-history-releases-table th {
+  white-space: nowrap;
+}
+
+.vaire-history-git-status {
+  margin-bottom: 0.2em;
+}
+
+.vaire-history-git-dirty {
+  background: color-mix(in srgb, var(--text-warning) 18%, transparent);
+  color: var(--text-warning);
+}
+
+.vaire-history-git-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.vaire-history-git-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  flex-wrap: wrap;
+  padding: 0.3em 0.2em;
+  border-bottom: 1px solid var(--background-modifier-border);
+  cursor: pointer;
+  border-radius: var(--radius-s, 4px);
+}
+
+.vaire-history-git-row:hover,
+.vaire-history-git-row:focus-visible {
+  background: var(--background-modifier-hover);
+}
+
+.vaire-history-git-hash {
+  color: var(--text-accent);
+  font-size: 0.85em;
+  flex-shrink: 0;
+}
+
+.vaire-history-git-subject {
+  color: var(--text-normal);
+  flex: 1 1 auto;
+  min-width: 8em;
+}
+
+/* ---- Git diff modal (src/history/diff-modal.ts) -------------------------------------------- */
+
+.vaire-history-diff-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.vaire-history-diff-meta {
+  font-family: var(--font-monospace);
+}
+
+.vaire-history-diff-body {
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.vaire-history-diff-pre {
+  margin: 0;
+  padding: 0.5em 0.6em;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  font-family: var(--font-monospace);
+  font-size: 0.85em;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.vaire-diff-line {
+  padding: 0 0.3em;
+}
+
+.vaire-diff-add {
+  background: color-mix(in srgb, var(--color-green, #4caf50) 15%, transparent);
+  color: var(--text-normal);
+}
+
+.vaire-diff-remove {
+  background: color-mix(in srgb, var(--text-error) 15%, transparent);
+  color: var(--text-normal);
+}
+
+.vaire-diff-hunk {
+  color: var(--text-accent);
+}
+
+.vaire-diff-meta {
+  color: var(--text-muted);
+}
+
+/* ---- Updates section (src/updates/section.ts) ----------------------------------------------
+ * Reuses .vaire-deps-table/.vaire-error/.vaire-muted/.vaire-empty from above; only what's new
+ * to this table (the lock-icon cell, the "current -> available" text, cited-changes note, and
+ * the per-dependency/registry error rows) gets its own rules. */
+
+.vaire-updates-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.vaire-updates-lock-cell {
+  width: 1.5em;
+  text-align: center;
+}
+
+.vaire-pin-icon {
+  cursor: default;
+  font-size: 0.9em;
+}
+
+.vaire-updates-available-cell {
+  white-space: normal;
+}
+
+.vaire-updates-cited {
+  margin-top: 0.15em;
+}
+
+.vaire-updates-call-error,
+.vaire-updates-registry-error {
+  padding: 0.4em 0.6em;
+  border-radius: var(--radius-s, 4px);
+  border-left: 3px solid var(--text-error);
+  background: color-mix(in srgb, var(--text-error) 8%, var(--background-secondary));
+}
+
+.vaire-updates-pin-note {
+  margin-top: 0.3em;
+}

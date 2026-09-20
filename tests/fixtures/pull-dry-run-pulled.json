@@ -1,0 +1,8 @@
+{
+  "store": "/home/dev/.vaire/store",
+  "pulled": [{ "package": "acme-general", "version": "1.2.0", "registry": "acme", "path": "" }],
+  "already": [],
+  "failed": [],
+  "dry_run": true,
+  "warnings": []
+}
