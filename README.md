@@ -13,7 +13,7 @@ metadata cache, so the editor stays snappy.
 
 - The [`vaire`](https://github.com/dezemand/vaire) CLI (0.3.x) installed. It is looked up on
   `PATH` and in `~/.local/bin`, `/opt/homebrew/bin`, `/usr/local/bin`; set an explicit path in
-  Settings → Vaire if it lives elsewhere.
+  Settings → Vairë if it lives elsewhere.
 - Obsidian 1.7.0 or newer, desktop.
 - A vault that contains at least one package root (a directory with `knowledge.toml`), at
   any depth. Files outside a package are left alone.
@@ -29,7 +29,7 @@ into your vault's plugins folder, so you end up with:
 ```
 
 Then in Obsidian: Settings → Community plugins → turn off Restricted mode if it is on,
-press the reload icon next to Installed plugins, and enable **Vaire**. (The release also
+press the reload icon next to Installed plugins, and enable **Vairë**. (The release also
 carries `main.js`, `manifest.json` and `styles.css` as separate files, which is what
 [BRAT](https://github.com/TfTHacker/obsidian42-brat) expects if you install with
 `dezemand/obsidian-vaire`.)
