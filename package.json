@@ -2,13 +2,14 @@
   "name": "vaire-obsidian",
   "version": "0.1.0",
   "private": true,
-  "description": "Vairë knowledge packages inside Obsidian",
+  "description": "Vair\u00eb knowledge packages inside Obsidian",
   "scripts": {
     "build": "bun esbuild.config.mjs production",
     "dev": "bun esbuild.config.mjs",
     "test": "bun test",
     "typecheck": "tsc -noEmit -skipLibCheck",
-    "install:vault": "bun scripts/install-vault.ts"
+    "install:vault": "bun scripts/install-vault.ts",
+    "package": "bun run build && bun scripts/package-zip.ts"
   },
   "devDependencies": {
     "@codemirror/lint": "6.9.5",

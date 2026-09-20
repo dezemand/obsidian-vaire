@@ -4,3 +4,5 @@ main.js
 .DS_Store
 data.json
 styles.css
+dist/
+*.zip

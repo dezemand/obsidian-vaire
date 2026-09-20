@@ -18,13 +18,33 @@ metadata cache, so the editor stays snappy.
 - A vault that contains at least one package root (a directory with `knowledge.toml`), at
   any depth. Files outside a package are left alone.
 
-## Build and install
+## Install
+
+**From a release (no build needed).** Download `vaire-<version>.zip` from the
+[latest release](https://github.com/dezemand/obsidian-vaire/releases/latest) and unzip it
+into your vault's plugins folder, so you end up with:
+
+```text
+<your vault>/.obsidian/plugins/vaire/{main.js,manifest.json,styles.css}
+```
+
+Then in Obsidian: Settings → Community plugins → turn off Restricted mode if it is on,
+press the reload icon next to Installed plugins, and enable **Vairë**. (The release also
+carries `main.js`, `manifest.json` and `styles.css` as separate files, which is what
+[BRAT](https://github.com/TfTHacker/obsidian42-brat) expects if you install with
+`dezemand/obsidian-vaire`.)
+
+The plugin needs the [`vaire`](https://github.com/dezemand/vaire) CLI on your machine; see
+Requirements above.
+
+## Build from source
 
 Only `bun` is needed.
 
 ```sh
 bun install
 bun run build          # esbuild -> main.js, styles/*.css -> styles.css
+bun run package        # build, then write vaire-<version>.zip for manual install
 bun run install:vault  # copies main.js, manifest.json, styles.css into <vault>/.obsidian/plugins/vaire
 ```
 
